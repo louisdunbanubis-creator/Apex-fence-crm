@@ -56,8 +56,11 @@ function clMaterialEstimate(){
   '<div class="estimate-result"><div class="muted">American Fence material cost</div><strong>'+money(americanBase)+'</strong><div class="muted">Apex American Fence material price (+25%)</div><strong>'+money(americanPrice)+'</strong><div class="muted">Total material price</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+"' "+(finish==='black'?'black vinyl':'galvanized')+' · '+lf+' LF · 10-ft nominal post spacing · 2 × 80-lb bags/post</div></div>';
   return {americanBase,americanPrice,concretePrice,material,rows,linePosts,totalTerminal,bags};
 }
+const WOOD_WALK_GATES={3:350,4:400,5:475};
 function woodMaterialEstimate(){
   const lf=+$('lf').value||0,h=+$('woodHeight').value||6;
+  const gateCount=+$('woodGateCount')?.value||0,gateWidth=+$('woodGateWidth')?.value||3;
+  const gateCharge=gateCount*(WOOD_WALK_GATES[gateWidth]||350);
   const picket=+(data.settings.woodPicketHD??4.28),rail=+(data.settings.woodRailHD??28.51),post=+(data.settings.woodPostHD??12.98),nails=+(data.settings.woodNailsHD??21),q=+(data.settings.quikrete??6.47);
   const markup=1+(data.settings.homeDepotMarkup??50)/100;
   const postCount=Math.ceil(lf/8)+1;
@@ -75,7 +78,7 @@ function woodMaterialEstimate(){
     ['Quikrete 80-lb bags',bags,q*markup]
   ];
   $('chainLinkBreakdown').innerHTML='<h3>Wood material breakdown</h3><div class="material-list">'+rows.map(r=>'<div class="row pipeline-row"><span>'+r[0]+' <small class="mutedline">× '+r[1]+'</small></span><strong>'+money(r[1]*r[2])+'</strong></div>').join('')+'</div><div class="estimate-result"><div class="muted">Home Depot material cost</div><strong>'+money(Object.values(base).reduce((a,b)=>a+b,0))+'</strong><div class="muted">Apex material price (+50%)</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+"' wood privacy · "+lf+" LF · "+postCount+" posts · "+bags+" bags of concrete</div></div>";
-  return {material,base,pickets,rails,postCount,bags,nailBoxes,rows};
+  return {material,base,pickets,rails,postCount,bags,nailBoxes,rows,gateCount,gateWidth,gateCharge};
 }
 function woodRepairEstimate(){
   const lf=+$('lf').value||0;
