@@ -1,0 +1,1 @@
+const WOOD_PRICES={picket:4.28,rail:28.51,post:12.98,nails:21,quikrete:6.47};
