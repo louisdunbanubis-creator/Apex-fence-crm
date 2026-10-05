@@ -58,16 +58,16 @@
   <div><div class="eyebrow">START YOUR PROJECT</div><h2>Let's take a look at your fence.</h2><p class="section-intro">Tell us what you need. A member of the Apex Fence team can review the project and get back to you about a free estimate.</p>
     <div class="contactbox"><strong>Apex Fence</strong><span>Apexinstallsne@gmail.com</span></div>
   </div>
-  <form class="form" id="estimateForm" action="#" method="post" enctype="multipart/form-data">
+  <form class="form" id="estimateForm" action="https://serverform.com/api/v1/submit" method="post" enctype="multipart/form-data">
     <h3>Request a Free Estimate</h3>
     <div class="fields">
-      <input name="Name" placeholder="Name" required>
+      <input name="Name" placeholder="Name" required><input type="hidden" name="access_key" value="cdccae76-89f3-4ead-b323-78ee472283cc">
       <input name="Phone" placeholder="Phone / Text" type="tel" required>
       <input name="Email" placeholder="Email" type="email">
       <input name="Address" placeholder="Project address" required>
       <select name="Project Type"><option>Fence Repair</option><option>New Fence Installation</option><option>Fence Staining</option><option>Fence Removal</option><option>Gate Repair / Installation</option><option>Other</option></select>
       <textarea name="Project Details" placeholder="Tell us a little about the project. You can mention fence type, approximate length, damage, gates, etc."></textarea>
-      <div class="uploadbox"><label for="photos"><strong>PHOTOS OF THE FENCE <span>(OPTIONAL)</span></strong><small>Photos help us understand repairs before we come out. Select up to 5 images.</small></label><input id="photos" name="photos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple><div id="photoPreview" class="photo-preview" aria-live="polite"></div></div>
+      <div class="uploadbox"><label for="photos"><strong>PHOTOS OF THE FENCE <span>(OPTIONAL)</span></strong><small>Photos help us understand repairs before we come out. Select up to 5 images.</small></label><input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple><div id="photoPreview" class="photo-preview" aria-live="polite"></div></div>
       <button class="btn gold" type="submit">SEND REQUEST</button>
     </div>
     <div id="formStatus" class="form-status" role="status"></div>
@@ -76,5 +76,5 @@
 </div></section>
 </main>
 <footer><div class="wrap"><span>© 2026 Apex Fence — Quality at Its Peak</span><span>Residential • Commercial • Repairs • Staining</span></div></footer>
-<script>const p=document.getElementById("photos"),v=document.getElementById("photoPreview"),f=document.getElementById("estimateForm"),s=document.getElementById("formStatus");p?.addEventListener("change",()=>{v.innerHTML="";[...p.files].slice(0,5).forEach(x=>{const i=document.createElement("img");i.alt="Selected fence photo";i.src=URL.createObjectURL(x);v.appendChild(i)});if(p.files.length>5){s.textContent="Please choose no more than 5 photos.";s.classList.add("show")}else{s.classList.remove("show")}});f?.addEventListener("submit",e=>{e.preventDefault();s.innerHTML="<strong>Photo upload is ready.</strong><br>The secure form receiver still needs to be connected before customer submissions can be sent.";s.classList.add("show")});</script></body>
+<script>const p=document.getElementById("photos"),v=document.getElementById("photoPreview"),f=document.getElementById("estimateForm"),s=document.getElementById("formStatus");p?.addEventListener("change",()=>{v.innerHTML="";[...p.files].slice(0,5).forEach(x=>{const i=document.createElement("img");i.alt="Selected fence photo";i.src=URL.createObjectURL(x);v.appendChild(i)});if(p.files.length>5){s.textContent="Please choose no more than 5 photos.";s.classList.add("show")}else{s.classList.remove("show")}});f?.addEventListener("submit",()=>{s.textContent="Sending your request…";s.classList.add("show")});</script></body>
 </html>
