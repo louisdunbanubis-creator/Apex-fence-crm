@@ -103,7 +103,7 @@ function calcEstimate(){
 }
 function renderEstimatorFields(){
   const type=$('jobType').value,woodInstall=type==='Wood Install',woodRepair=type==='Wood Repair',chain=type==='Chain Link Install';
-  $('woodGateCountLabel').style.display=woodInstall?'':'none';$('woodGateWidthLabel').style.display=woodInstall?'':'none';
+  $('woodGateCountLabel').style.display=woodInstall?'':'none';$('woodGateWidthLabel').style.display=woodInstall?'':'none';$('materialBreakdownTitle').textContent=chain?'Chain-link material calculator':woodInstall?'Wood material calculator':'Material calculator';
   $('clHeight').closest('label').style.display=chain?'':'none';$('clFinish').closest('label').style.display=chain?'':'none';
   $('terminalPosts').closest('label').style.display=chain?'':'none';$('singleGates').closest('label').style.display=chain?'':'none';$('doubleGates').closest('label').style.display=chain?'':'none';
   $('woodHeight').closest('label').style.display=woodInstall?'':'none';
@@ -116,7 +116,7 @@ function renderEstimatorFields(){
   if(woodRepair){$('applyRepairPreset').style.display='none'}else{$('applyRepairPreset').style.display=''}
 }
 
-['lf','terminalPosts','singleGates','doubleGates','laborHours','laborRate','serviceCharge','markup','woodHeight','woodRepairType','woodRepairPosts'].forEach(id=>document.addEventListener('input',e=>{if(e.target.id===id)calcEstimate()}));document.addEventListener('change',e=>{if(['jobType','clHeight','clFinish','terminalPosts','singleGates','doubleGates','singleGateWidth','doubleGateWidth','woodHeight','woodRepairType','woodRepairPosts'].includes(e.target.id)){renderEstimatorFields();calcEstimate()}});
+['lf','terminalPosts','singleGates','doubleGates','laborHours','laborRate','serviceCharge','markup','woodHeight','woodGateCount','woodGateWidth','woodRepairType','woodRepairPosts'].forEach(id=>document.addEventListener('input',e=>{if(e.target.id===id)calcEstimate()}));document.addEventListener('change',e=>{if(['jobType','clHeight','clFinish','terminalPosts','singleGates','doubleGates','singleGateWidth','doubleGateWidth','woodHeight','woodGateCount','woodGateWidth','woodRepairType','woodRepairPosts'].includes(e.target.id)){renderEstimatorFields();calcEstimate()}});
 document.addEventListener('click',e=>{const p=e.target.closest('[data-preset]');if(!p)return;const s=data.settings;if(p.dataset.preset==='post1'||p.dataset.preset==='post5'){$('jobType').value='Wood Repair';$('woodRepairType').value='basic';$('woodRepairPosts').value=p.dataset.preset==='post1'?1:5;$('lf').value=0}if(p.dataset.preset==='repair'){$('jobType').value='Wood Repair';$('woodRepairType').value='basic';$('woodRepairPosts').value=0;$('lf').value=10}if(p.dataset.preset==='reinstall'){$('jobType').value='Wood Repair';$('woodRepairType').value='reinstall';$('woodRepairPosts').value=0;$('lf').value=20}renderEstimatorFields();calcEstimate()});
 $('applyRepairPreset').onclick=()=>{$('jobType').value='Wood Repair';$('serviceCharge').value=data.settings.serviceCharge;$('laborRate').value=data.settings.laborRate;$('markup').value=35;calcEstimate()};
 $('saveEstimate').onclick=()=>{const c=calcEstimate();data.estimates.unshift({id:crypto.randomUUID(),type:$('jobType').value,...c,createdAt:new Date().toISOString()});save();alert('Estimate saved.')};
