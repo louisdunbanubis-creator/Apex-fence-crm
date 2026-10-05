@@ -26,31 +26,35 @@ function clMaterialEstimate(){
   const totalTerminal=terminals+2*sg+2*dg;
   const railPieces=Math.ceil(lf/21);
   const bags=Math.ceil((linePosts+totalTerminal)*2);
-  const markup=1+(data.settings.materialMarkup??25)/100; const hdMarkup=1+(data.settings.homeDepotMarkup??50)/100;
+  const materialMarkup=1+(data.settings.materialMarkup??25)/100;
+  const homeDepotMarkup=1+(data.settings.homeDepotMarkup??50)/100;
   const qCost=(data.settings.quikrete??6.47);
   const rows=[
-    ['Fabric',lf,p.fabric],
-    ['Line posts',linePosts,p.line],
-    ['Terminal/corner/gate posts',totalTerminal,p.terminal],
-    ['Top rail (21\')',railPieces,p.rail],
-    ['Tension bars',totalTerminal,p.tensionBar],
-    ['Terminal caps',totalTerminal,p.termCap],
-    ['Tension bands',totalTerminal*2,p.tensionBand],
-    ['Line tops',linePosts,p.lineTop],
-    ['Rail ends',Math.max(2,terminals+2*sg+2*dg),p.railEnd],
-    ['End bands',Math.max(2,terminals),p.endBand],
-    ['Wire ties / bags of 100',Math.ceil(lf/100),p.wireTie],
-    ['Carriage bolts',Math.max(4,totalTerminal*2),p.bolt],
-    ['Quikrete 80-lb bags',bags,qCost*hdMarkup]
+    ['Fabric',lf,p.fabric,'american'],
+    ['Line posts',linePosts,p.line,'american'],
+    ['Terminal/corner/gate posts',totalTerminal,p.terminal,'american'],
+    ['Top rail (21 ft)',railPieces,p.rail,'american'],
+    ['Tension bars',totalTerminal,p.tensionBar,'american'],
+    ['Terminal caps',totalTerminal,p.termCap,'american'],
+    ['Tension bands',totalTerminal*2,p.tensionBand,'american'],
+    ['Line tops',linePosts,p.lineTop,'american'],
+    ['Rail ends',Math.max(2,terminals+2*sg+2*dg),p.railEnd,'american'],
+    ['End bands',Math.max(2,terminals),p.endBand,'american'],
+    ['Wire ties / bags of 100',Math.ceil(lf/100),p.wireTie,'american'],
+    ['Carriage bolts',Math.max(4,totalTerminal*2),p.bolt,'american']
   ];
   const gateRows=[];
-  if(sg)gateRows.push(['Single swing gates ('+sw+' ft)',sg,GATES[h].single[sw]]);
-  if(dg)gateRows.push(['Double drive gates ('+dw+' ft)',dg,GATES[h].double[dw]]);
+  if(sg)gateRows.push(['Single swing gates ('+sw+' ft)',sg,GATES[h].single[sw],'american']);
+  if(dg)gateRows.push(['Double drive gates ('+dw+' ft)',dg,GATES[h].double[dw],'american']);
   rows.push(...gateRows);
-  ];
-  const base=rows.reduce((s,r)=>s+r[1]*r[2],0),gateHomeDepot=false,material=base*markup;
-  $('chainLinkBreakdown').innerHTML='<div class="material-list">'+rows.map(r=>'<div class="row pipeline-row"><span>'+r[0]+' <small class="mutedline">× '+r[1]+'</small></span><strong>'+money(r[1]*r[2]*markup)+'</strong></div>').join('')+'</div><div class="estimate-result"><div class="muted">Material cost before markup</div><strong>'+money(base)+'</strong><div class="muted">Apex material price (+25%)</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+'\' '+(finish==='black'?'black vinyl':'galvanized')+' · '+lf+' LF · 10-ft nominal post spacing · 2 × 80-lb bags/post</div></div>';
-  return {base,material,rows,linePosts,totalTerminal,bags};
+  const americanBase=rows.reduce((s,r)=>s+r[1]*r[2],0);
+  const americanPrice=americanBase*materialMarkup;
+  const concretePrice=bags*qCost*homeDepotMarkup;
+  const material=americanPrice+concretePrice;
+  $('chainLinkBreakdown').innerHTML='<div class="material-list">'+rows.map(r=>'<div class="row pipeline-row"><span>'+r[0]+' <small class="mutedline">× '+r[1]+'</small></span><strong>'+money(r[1]*r[2]*materialMarkup)+'</strong></div>').join('')+
+  '<div class="row pipeline-row"><span>Quikrete 80-lb bags <small class="mutedline">× '+bags+' · Home Depot +50%</small></span><strong>'+money(concretePrice)+'</strong></div></div>'+
+  '<div class="estimate-result"><div class="muted">American Fence material cost</div><strong>'+money(americanBase)+'</strong><div class="muted">Apex American Fence material price (+25%)</div><strong>'+money(americanPrice)+'</strong><div class="muted">Total material price</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+"' "+(finish==='black'?'black vinyl':'galvanized')+' · '+lf+' LF · 10-ft nominal post spacing · 2 × 80-lb bags/post</div></div>';
+  return {americanBase,americanPrice,concretePrice,material,rows,linePosts,totalTerminal,bags};
 }
 function calcEstimate(){
   const lf=+$('lf').value||0,hours=+$('laborHours').value||0,rate=+$('laborRate').value||0,service=+$('serviceCharge').value||0,markup=(+$('markup').value||0)/100;
