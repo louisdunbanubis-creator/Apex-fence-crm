@@ -1,4 +1,4 @@
-const KEY='apexFenceCRM.v1';const defaultData={leads:[],jobs:[],estimates:[],settings:{laborRate:45,serviceCharge:175,materialMarkup:25,homeDepotMarkup:50,woodPost14:125,woodPost5:100,quikrete:6.47, bagsPerPost:2,woodRepairLF:25,reinstallLF:10,picketAmerican:8.21,railAmerican:14.47,postAmerican:48.69}};let data=load();let deferredInstall=null;
+const KEY='apexFenceCRM.v1';const defaultData={leads:[],jobs:[],estimates:[],settings:{laborRate:45,serviceCharge:175,materialMarkup:25,homeDepotMarkup:50,woodPost14:125,woodPost5:100,woodPicketHD:4.28,woodRailHD:28.51,woodPostHD:12.98,woodNailsHD:21,quikrete:6.47, bagsPerPost:2,woodRepairLF:25,reinstallLF:10,picketAmerican:8.21,railAmerican:14.47,postAmerican:48.69}};let data=load();let deferredInstall=null;
 function load(){try{return {...defaultData,...JSON.parse(localStorage.getItem(KEY)||'{}'),settings:{...defaultData.settings,...(JSON.parse(localStorage.getItem(KEY)||'{}').settings||{})}}}catch{return structuredClone(defaultData)}}function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}function money(n){return '$'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
 function $(id){return document.getElementById(id)}function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function showView(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));window.scrollTo(0,0)}
@@ -56,17 +56,64 @@ function clMaterialEstimate(){
   '<div class="estimate-result"><div class="muted">American Fence material cost</div><strong>'+money(americanBase)+'</strong><div class="muted">Apex American Fence material price (+25%)</div><strong>'+money(americanPrice)+'</strong><div class="muted">Total material price</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+"' "+(finish==='black'?'black vinyl':'galvanized')+' · '+lf+' LF · 10-ft nominal post spacing · 2 × 80-lb bags/post</div></div>';
   return {americanBase,americanPrice,concretePrice,material,rows,linePosts,totalTerminal,bags};
 }
+function woodMaterialEstimate(){
+  const lf=+$('lf').value||0,h=+$('woodHeight').value||6;
+  const picket=+(data.settings.woodPicketHD??4.28),rail=+(data.settings.woodRailHD??28.51),post=+(data.settings.woodPostHD??12.98),nails=+(data.settings.woodNailsHD??21),q=+(data.settings.quikrete??6.47);
+  const markup=1+(data.settings.homeDepotMarkup??50)/100;
+  const postCount=Math.ceil(lf/8)+1;
+  const pickets=Math.ceil((lf/(5.5/12))*1.05);
+  const rails=Math.ceil(lf/8)*(h===4?2:3);
+  const bags=postCount*(data.settings.bagsPerPost??2);
+  const nailBoxes=Math.max(1,Math.ceil((pickets*(h===4?2:3))/740));
+  const base={pickets:pickets*picket,rails:rails*rail,posts:postCount*post,nails:nailBoxes*nails,quikrete:bags*q};
+  const material=Object.values(base).reduce((a,b)=>a+b,0)*markup;
+  const rows=[
+    ['Cedar pickets',pickets,picket*markup],
+    ['Cedar 2×4 rails',rails,rail*markup],
+    ['Cedar-Tone 4×4×8 posts',postCount,post*markup],
+    ['Exterior galvanized nails',nailBoxes,nails*markup],
+    ['Quikrete 80-lb bags',bags,q*markup]
+  ];
+  $('chainLinkBreakdown').innerHTML='<h3>Wood material breakdown</h3><div class="material-list">'+rows.map(r=>'<div class="row pipeline-row"><span>'+r[0]+' <small class="mutedline">× '+r[1]+'</small></span><strong>'+money(r[1]*r[2])+'</strong></div>').join('')+'</div><div class="estimate-result"><div class="muted">Home Depot material cost</div><strong>'+money(Object.values(base).reduce((a,b)=>a+b,0))+'</strong><div class="muted">Apex material price (+50%)</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+"' wood privacy · "+lf+" LF · "+postCount+" posts · "+bags+" bags of concrete</div></div>";
+  return {material,base,pickets,rails,postCount,bags,nailBoxes,rows};
+}
+function woodRepairEstimate(){
+  const lf=+$('lf').value||0;
+  const type=$('woodRepairType')?.value||'basic';
+  const postCount=+$('woodRepairPosts')?.value||0;
+  const rate=type==='reinstall'?(data.settings.reinstallLF??10):(data.settings.woodRepairLF??25);
+  const postRate=postCount>=5?(data.settings.woodPost5??100):(data.settings.woodPost14??125);
+  const service=data.settings.serviceCharge??175;
+  const quote=Math.max(service,lf*rate+postCount*postRate);
+  return {quote,lf,rate,postCount,postRate,service,type};
+}
 function calcEstimate(){
   const lf=+$('lf').value||0,hours=+$('laborHours').value||0,rate=+$('laborRate').value||0,service=+$('serviceCharge').value||0,markup=(+$('markup').value||0)/100;
-  let mat=+$('materialCost')?.value||0;
-  let cl=null;
-  if($('jobType').value==='Chain Link Install'){cl=clMaterialEstimate();mat=cl?.material||0}if($('jobType').value==='Wood Install'){const lf=+$('lf').value||0;const posts=Math.ceil(lf/8)+1;const pickets=Math.ceil((lf/(5.5/12))*1.05);const rails=Math.ceil(lf/8)*3;const bags=posts*2;const nails=Math.max(1,Math.ceil(pickets*3/740));mat=(pickets*4.28+rails*28.51+posts*12.98+nails*21+bags*6.47)*1.5}
-  const cost=mat+hours*rate+service,price=cost*(1+markup);
-  $('estimateResult').innerHTML='<div class="muted">Customer quote</div><div class="estimate-price">'+money(price)+'</div><div class="profit">Estimated gross profit: '+money(price-cost)+'</div><div class="mutedline">'+lf+' LF · Material '+money(mat)+' · Labor '+money(hours*rate)+' · Service '+money(service)+'</div>';
-  return{lf,mat,h:hours,rate,service,markup,cost,price,chainLink:cl};
+  let mat=+$('materialCost')?.value||0,cl=null,wood=null,repair=null,price=0,cost=0;
+  const type=$('jobType').value;
+  if(type==='Chain Link Install'){cl=clMaterialEstimate();mat=cl?.material||0;cost=mat+hours*rate+service;price=cost*(1+markup)}
+  else if(type==='Wood Install'){wood=woodMaterialEstimate();mat=wood.material;cost=mat+hours*rate+service;price=cost*(1+markup)}
+  else if(type==='Wood Repair'){repair=woodRepairEstimate();price=repair.quote;cost=Math.max(0,price-repair.postCount*repair.postRate);mat=repair.postCount*repair.postRate}
+  else {cost=mat+hours*rate+service;price=cost*(1+markup)}
+  $('estimateResult').innerHTML='<div class="muted">Customer quote</div><div class="estimate-price">'+money(price)+'</div><div class="profit">Estimated gross profit: '+money(price-cost)+'</div><div class="mutedline">'+lf+' LF · Material '+money(mat)+' · Labor '+money(hours*rate)+' · Service '+money(service)+(repair?' · '+(repair.type==='reinstall'?'Reinstall':'Basic repair')+' '+money(lf*repair.rate)+' · Posts '+repair.postCount:'')+'</div>';
+  return{lf,mat,h:hours,rate,service,markup,cost,price,chainLink:cl,wood,repair};
 }
-['lf','terminalPosts','singleGates','doubleGates','laborHours','laborRate','serviceCharge','markup'].forEach(id=>document.addEventListener('input',e=>{if(e.target.id===id)calcEstimate()}));document.addEventListener('change',e=>{if(['jobType','clHeight','clFinish','terminalPosts','singleGates','doubleGates','singleGateWidth','doubleGateWidth'].includes(e.target.id))calcEstimate()});
-document.addEventListener('click',e=>{const p=e.target.closest('[data-preset]');if(!p)return;const s=data.settings;if(p.dataset.preset==='repair'){$('jobType').value='Wood Repair';$('lf').value=10;$('laborHours').value=2}if(p.dataset.preset==='reinstall'){$('jobType').value='Wood Repair';$('lf').value=20;$('laborHours').value=2}calcEstimate()});
+function renderEstimatorFields(){
+  const type=$('jobType').value,woodInstall=type==='Wood Install',woodRepair=type==='Wood Repair',chain=type==='Chain Link Install';
+  $('clHeight').closest('label').style.display=chain?'':'none';$('clFinish').closest('label').style.display=chain?'':'none';
+  $('terminalPosts').closest('label').style.display=chain?'':'none';$('singleGates').closest('label').style.display=chain?'':'none';$('doubleGates').closest('label').style.display=chain?'':'none';
+  $('woodHeight').closest('label').style.display=woodInstall?'':'none';
+  if($('woodRepairType'))$('woodRepairType').closest('label').style.display=woodRepair?'':'none';
+  if($('woodRepairPosts'))$('woodRepairPosts').closest('label').style.display=woodRepair?'':'none';
+  $('laborHours').closest('label').style.display=(woodRepair?'none':'');
+  $('laborRate').closest('label').style.display=(woodRepair?'none':'');
+  $('markup').closest('label').style.display=(woodRepair?'none':'');
+  $('serviceCharge').value=woodRepair?(data.settings.serviceCharge??175):$('serviceCharge').value;
+  if(woodRepair){$('applyRepairPreset').style.display='none'}else{$('applyRepairPreset').style.display=''}
+}
+
+['lf','terminalPosts','singleGates','doubleGates','laborHours','laborRate','serviceCharge','markup','woodHeight','woodRepairType','woodRepairPosts'].forEach(id=>document.addEventListener('input',e=>{if(e.target.id===id)calcEstimate()}));document.addEventListener('change',e=>{if(['jobType','clHeight','clFinish','terminalPosts','singleGates','doubleGates','singleGateWidth','doubleGateWidth','woodHeight','woodRepairType','woodRepairPosts'].includes(e.target.id)){renderEstimatorFields();calcEstimate()}});
+document.addEventListener('click',e=>{const p=e.target.closest('[data-preset]');if(!p)return;const s=data.settings;if(p.dataset.preset==='post1'||p.dataset.preset==='post5'){$('jobType').value='Wood Repair';$('woodRepairType').value='basic';$('woodRepairPosts').value=p.dataset.preset==='post1'?1:5;$('lf').value=0}if(p.dataset.preset==='repair'){$('jobType').value='Wood Repair';$('woodRepairType').value='basic';$('woodRepairPosts').value=0;$('lf').value=10}if(p.dataset.preset==='reinstall'){$('jobType').value='Wood Repair';$('woodRepairType').value='reinstall';$('woodRepairPosts').value=0;$('lf').value=20}renderEstimatorFields();calcEstimate()});
 $('applyRepairPreset').onclick=()=>{$('jobType').value='Wood Repair';$('serviceCharge').value=data.settings.serviceCharge;$('laborRate').value=data.settings.laborRate;$('markup').value=35;calcEstimate()};
 $('saveEstimate').onclick=()=>{const c=calcEstimate();data.estimates.unshift({id:crypto.randomUUID(),type:$('jobType').value,...c,createdAt:new Date().toISOString()});save();alert('Estimate saved.')};
 $('leadSearch').oninput=renderLeads;$('leadFilter').onchange=renderLeads;
@@ -78,5 +125,5 @@ $('exportData').onclick=()=>{const a=document.createElement('a');a.href=URL.crea
 $('importData').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);save();alert('Backup imported.')}catch{alert('Invalid backup file.')}};r.readAsText(f)};
 $('resetData').onclick=()=>{if(confirm('Delete all CRM data from this browser? Export a backup first if needed.')){data=structuredClone(defaultData);save()}};
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;$('installBtn').classList.remove('hidden')});$('installBtn').onclick=async()=>{if(deferredInstall){deferredInstall.prompt();deferredInstall=null}};
-renderAll();
-$('jobType').addEventListener('change',()=>{const cl=$('jobType').value==='Chain Link Install';document.querySelectorAll('#clHeight,#clFinish,#terminalPosts,#singleGates,#singleGateWidth,#doubleGates,#doubleGateWidth').forEach(x=>x.disabled=!cl);calcEstimate()});
+renderAll();renderEstimatorFields();
+$('jobType').addEventListener('change',()=>{const cl=$('jobType').value==='Chain Link Install';document.querySelectorAll('#clHeight,#clFinish,#terminalPosts,#singleGates,#singleGateWidth,#doubleGates,#doubleGateWidth').forEach(x=>x.disabled=!cl);renderEstimatorFields();calcEstimate()});
