@@ -39,7 +39,7 @@
     <h2>Fence system</h2>
     <div class="grid2">
       <label>Job type<select id="jobType"><option>Chain Link Install</option><option>Wood Install</option><option>Vinyl Install</option><option>Chain Link Repair</option><option>Wood Repair</option><option>Vinyl Repair</option><option>Ornamental Repair</option><option>Fence Staining</option><option>Fence Removal</option></select></label>
-      <label>Chain-link height<select id="clHeight"><option value="4">4' Chain Link</option><option value="6">6' Chain Link</option></select></label><label>Wood height<select id="woodHeight"><option value="6">6' Wood Privacy</option><option value="4">4' Wood Privacy</option></select></label>
+      <label>Chain-link height<select id="clHeight"><option value="4">4' Chain Link</option><option value="6">6' Chain Link</option></select></label><label>Wood height<select id="woodHeight"><option value="6">6' Wood Privacy</option><option value="4">4' Wood Privacy</option></select></label><label>Wood repair type<select id="woodRepairType"><option value="basic">Basic repair · $25/LF</option><option value="reinstall">Reinstall · $10/LF</option></select></label><label>Wood posts to replace<input id="woodRepairPosts" type="number" min="0" value="0"></label>
       <label>Finish<select id="clFinish"><option value="galv">Galvanized</option><option value="black">Black Vinyl Coated</option></select></label>
       <label>Linear feet<input id="lf" type="number" min="0" value="100"></label>
       <label>Terminal / corner post locations<input id="terminalPosts" type="number" min="2" value="2"></label>
@@ -76,8 +76,8 @@
       <label>Wood post, 5+ $<input id="woodPost5" type="number" value="100"></label>
       <label>Quikrete 80-lb bag $<input id="quikrete" type="number" value="6.47"></label>
       <label>Bags per post<input id="bagsPerPost" type="number" value="1"></label>
-      <label>Wood repair $/LF<input id="woodRepairLF" type="number" value="25"></label>
-      <label>Reinstall $/LF<input id="reinstallLF" type="number" value="10"></label><label>American Fence cedar picket $<input id="picketAmerican" type="number" value="8.21"></label><label>American Fence 2x4 rail $<input id="railAmerican" type="number" value="14.47"></label><label>American Fence 4x4x8 stain-treated post $<input id="postAmerican" type="number" value="48.69"></label>
+      <label>Wood repair $/LF<input id="woodRepairLF" type="number" value="25"></label><label>Home Depot cedar picket $<input id="woodPicketHD" type="number" value="4.28"></label><label>Home Depot cedar 2×4 rail $<input id="woodRailHD" type="number" value="28.51"></label><label>Home Depot cedar-tone 4×4×8 post $<input id="woodPostHD" type="number" value="12.98"></label><label>Home Depot galvanized nails / box $<input id="woodNailsHD" type="number" value="21"></label>
+      <label>Reinstall $/LF<input id="reinstallLF" type="number" value="10"></label>
     </div>
     <button class="primary" id="saveSettings">Save Settings</button>
   </div>
