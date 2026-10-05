@@ -95,7 +95,7 @@ function calcEstimate(){
   let mat=+$('materialCost')?.value||0,cl=null,wood=null,repair=null,price=0,cost=0;
   const type=$('jobType').value;
   if(type==='Chain Link Install'){cl=clMaterialEstimate();mat=cl?.material||0;cost=mat+hours*rate+service;price=cost*(1+markup)}
-  else if(type==='Wood Install'){wood=woodMaterialEstimate();mat=wood.material;cost=mat+hours*rate+service;price=cost*(1+markup)}
+  else if(type==='Wood Install'){wood=woodMaterialEstimate();mat=wood.material;cost=mat+hours*rate+service;price=cost*(1+markup)+wood.gateCharge}
   else if(type==='Wood Repair'){repair=woodRepairEstimate();price=repair.quote;cost=Math.max(0,price-repair.postCount*repair.postRate);mat=repair.postCount*repair.postRate}
   else {cost=mat+hours*rate+service;price=cost*(1+markup)}
   $('estimateResult').innerHTML='<div class="muted">Customer quote</div><div class="estimate-price">'+money(price)+'</div><div class="profit">Estimated gross profit: '+money(price-cost)+'</div><div class="mutedline">'+lf+' LF · Material '+money(mat)+' · Labor '+money(hours*rate)+' · Service '+money(service)+(repair?' · '+(repair.type==='reinstall'?'Reinstall':'Basic repair')+' '+money(lf*repair.rate)+' · Posts '+repair.postCount:'')+'</div>';
@@ -103,6 +103,7 @@ function calcEstimate(){
 }
 function renderEstimatorFields(){
   const type=$('jobType').value,woodInstall=type==='Wood Install',woodRepair=type==='Wood Repair',chain=type==='Chain Link Install';
+  $('woodGateCountLabel').style.display=woodInstall?'':'none';$('woodGateWidthLabel').style.display=woodInstall?'':'none';
   $('clHeight').closest('label').style.display=chain?'':'none';$('clFinish').closest('label').style.display=chain?'':'none';
   $('terminalPosts').closest('label').style.display=chain?'':'none';$('singleGates').closest('label').style.display=chain?'':'none';$('doubleGates').closest('label').style.display=chain?'':'none';
   $('woodHeight').closest('label').style.display=woodInstall?'':'none';
