@@ -36,28 +36,31 @@
 <section id="estimates" class="view">
   <div class="page-head"><div><span class="eyebrow">PRICING</span><h1>Estimate Builder</h1></div></div>
   <div class="card">
+    <h2>Fence system</h2>
     <div class="grid2">
-      <label>Job type<select id="jobType"><option>Wood Repair</option><option>Vinyl Repair</option><option>Chain Link Repair</option><option>Ornamental Repair</option><option>Wood Install</option><option>Vinyl Install</option><option>Chain Link Install</option><option>Ornamental Install</option><option>Fence Staining</option><option>Fence Removal</option></select></label>
-      <label>Linear feet<input id="lf" type="number" min="0" value="0"></label>
-      <label>Posts<input id="posts" type="number" min="0" value="0"></label>
-      <label>Material/supplies cost $<input id="materialCost" type="number" min="0" step="0.01" value="0"></label>
+      <label>Job type<select id="jobType"><option>Chain Link Install</option><option>Wood Install</option><option>Vinyl Install</option><option>Chain Link Repair</option><option>Wood Repair</option><option>Vinyl Repair</option><option>Ornamental Repair</option><option>Fence Staining</option><option>Fence Removal</option></select></label>
+      <label>Chain-link height<select id="clHeight"><option value="4">4' Chain Link</option><option value="6">6' Chain Link</option></select></label>
+      <label>Finish<select id="clFinish"><option value="galv">Galvanized</option><option value="black">Black Vinyl Coated</option></select></label>
+      <label>Linear feet<input id="lf" type="number" min="0" value="100"></label>
+      <label>Terminal / corner post locations<input id="terminalPosts" type="number" min="2" value="2"></label>
+      <label>Single gate openings<input id="singleGates" type="number" min="0" value="0"></label>
+      <label>Double drive gate openings<input id="doubleGates" type="number" min="0" value="0"></label>
       <label>Labor hours<input id="laborHours" type="number" min="0" step="0.5" value="0"></label>
       <label>Labor rate $/hr<input id="laborRate" type="number" min="0" step="1" value="45"></label>
       <label>Travel/service charge $<input id="serviceCharge" type="number" min="0" step="1" value="175"></label>
-      <label>Target markup %<input id="markup" type="number" min="0" step="1" value="35"></label>
+      <label>Customer labor/overhead markup %<input id="markup" type="number" min="0" step="1" value="35"></label>
     </div>
     <div class="estimate-result" id="estimateResult"></div>
     <div class="row gap"><button class="secondary" id="applyRepairPreset">Use Apex Repair Preset</button><button class="primary" id="saveEstimate">Save Estimate</button></div>
   </div>
+  <div class="card"><h2>Chain-link material calculator</h2><p class="muted">Uses America's Fence Store Omaha residential-system pricing with the Apex 25% material markup. 4' and 6' residential galvanized and black vinyl systems are supported, including fabric, line posts, terminal posts, top rail, tension bars/bands, terminal caps, line tops, rail ends, end bands, wire ties and standard gate hardware.</p><div id="chainLinkBreakdown"></div></div>
   <div class="card"><h2>Apex repair presets</h2><div class="preset-grid">
     <button class="preset" data-preset="post1">Wood post · 1–4</button>
     <button class="preset" data-preset="post5">Wood post · 5+</button>
     <button class="preset" data-preset="repair">Basic wood repair / LF</button>
     <button class="preset" data-preset="reinstall">Reinstall / LF</button>
-  </div><p class="muted">Wood material defaults: American Fence Omaha cost + 25%. Home Depot material purchases: cost + 50%. Quikrete is based on 80-lb bags. Pricing is editable in Settings.</p></div>
-</section>
-
-<section id="jobs" class="view">
+  </div><p class="muted">Wood: American Fence material cost +25%. Home Depot material +50%. Quikrete uses 80-lb bags. All pricing remains editable in Settings.</p></div>
+</section><section id="jobs" class="view">
   <div class="page-head"><div><span class="eyebrow">SCHEDULE</span><h1>Jobs</h1></div><button class="primary" data-action="new-job">+ Job</button></div>
   <div id="jobList"></div>
 </section>
