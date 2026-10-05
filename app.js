@@ -60,7 +60,7 @@ function calcEstimate(){
   const lf=+$('lf').value||0,hours=+$('laborHours').value||0,rate=+$('laborRate').value||0,service=+$('serviceCharge').value||0,markup=(+$('markup').value||0)/100;
   let mat=+$('materialCost')?.value||0;
   let cl=null;
-  if($('jobType').value==='Chain Link Install'){cl=clMaterialEstimate();mat=cl?.material||0}
+  if($('jobType').value==='Chain Link Install'){cl=clMaterialEstimate();mat=cl?.material||0}if($('jobType').value==='Wood Install'){const lf=+$('lf').value||0;const posts=Math.ceil(lf/8)+1;const pickets=Math.ceil((lf/(5.5/12))*1.05);const rails=Math.ceil(lf/8)*3;const bags=posts*2;const nails=Math.max(1,Math.ceil(pickets*3/740));mat=(pickets*4.28+rails*28.51+posts*12.98+nails*21+bags*6.47)*1.5}
   const cost=mat+hours*rate+service,price=cost*(1+markup);
   $('estimateResult').innerHTML='<div class="muted">Customer quote</div><div class="estimate-price">'+money(price)+'</div><div class="profit">Estimated gross profit: '+money(price-cost)+'</div><div class="mutedline">'+lf+' LF · Material '+money(mat)+' · Labor '+money(hours*rate)+' · Service '+money(service)+'</div>';
   return{lf,mat,h:hours,rate,service,markup,cost,price,chainLink:cl};
