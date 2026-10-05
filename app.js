@@ -11,6 +11,7 @@ function openModal(html){$('modalContent').innerHTML=html;$('modal').classList.r
 function openLead(existing){const x=existing||{status:'New',jobType:'Repair'};openModal('<h2>'+ (existing?'Edit':'New') +' Lead</h2><form id="leadForm"><div class="grid2"><label>Name<input name="name" required value="'+esc(x.name||'')+'"></label><label>Phone<input name="phone" value="'+esc(x.phone||'')+'"></label><label>Email<input name="email" value="'+esc(x.email||'')+'"></label><label>Address<input name="address" value="'+esc(x.address||'')+'"></label><label>Job type<select name="jobType">'+['Repair','Install','Staining','Removal'].map(o=>'<option '+(x.jobType===o?'selected':'')+'>'+o+'</option>').join('')+'</select></label><label>Status<select name="status">'+['New','Contacted','Estimate Scheduled','Estimate Sent','Won','Scheduled','Complete','Lost'].map(o=>'<option '+(x.status===o?'selected':'')+'>'+o+'</option>').join('')+'</select></label></div><label style="margin-top:14px">Notes<textarea name="notes" rows="4" style="background:#0b111b;color:#fff;border:1px solid var(--line);border-radius:9px;padding:12px">'+esc(x.notes||'')+'</textarea></label><div class="row form-actions"><button type="button" class="secondary" id="cancelModal">Cancel</button><button class="primary">Save Lead</button></div></form>');$('leadForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),obj=Object.fromEntries(fd);if(existing)Object.assign(existing,obj);else data.leads.unshift({id:crypto.randomUUID(),...obj,createdAt:new Date().toISOString()});save();closeModal();showView('leads')};$('cancelModal').onclick=closeModal}
 function editLead(id){openLead(data.leads.find(x=>x.id===id))}function openJobForLead(id){openJob(data.leads.find(x=>x.id===id))}
 function openJob(lead){const x={name:lead?.name||'',address:lead?.address||'',status:'Scheduled'};openModal('<h2>Schedule Job</h2><form id="jobForm"><div class="grid2"><label>Customer<input name="name" required value="'+esc(x.name)+'"></label><label>Date<input name="date" type="date" required></label><label>Address<input name="address" value="'+esc(x.address)+'"></label><label>Job status<select name="status"><option>Scheduled</option><option>In Progress</option><option>Complete</option></select></label><label>Job title<input name="title" value="'+esc(lead?.jobType||'Fence Job')+'"></label></div><div class="row form-actions"><button type="button" class="secondary" id="cancelModal">Cancel</button><button class="primary">Save Job</button></div></form>');$('jobForm').onsubmit=e=>{e.preventDefault();data.jobs.push({id:crypto.randomUUID(),...Object.fromEntries(new FormData(e.target))});if(lead&&lead.status==='Won')lead.status='Scheduled';save();closeModal();showView('jobs')};$('cancelModal').onclick=closeModal}
+const GATES={4:{single:{3:161.23,4:172.82,5:184.45,6:196.04},double:{6:172.47,8:277.95,10:295.12,12:314.24,14:331.41}},6:{single:{3:216.73,4:230.33,5:243.89,6:170.02},double:{6:217.33,8:334.96,10:356.08,12:379.10,14:402.13}}};
 const CL={
   "4-galv":{fabric:7.05,terminal:35.43,line:24.78,rail:58.55,tensionBar:4.70,termCap:2.08,tensionBand:0.96,lineTop:2.29,railEnd:1.65,endBand:1.12,wireTie:13.38,bolt:0.42},
   "6-galv":{fabric:10.28,terminal:47.76,line:33.04,rail:58.55,tensionBar:7.31,termCap:2.08,tensionBand:0.96,lineTop:2.29,railEnd:1.65,endBand:1.12,wireTie:13.38,bolt:0.42},
@@ -19,13 +20,13 @@ const CL={
 };
 function clMaterialEstimate(){
   const lf=+$('lf').value||0,h=+$('clHeight').value||4,finish=$('clFinish').value||'galv';
-  const terminals=Math.max(2,+$('terminalPosts').value||2),sg=+$('singleGates').value||0,dg=+$('doubleGates').value||0;
+  const terminals=Math.max(2,+$('terminalPosts').value||2),sg=+$('singleGates').value||0,dg=+$('doubleGates').value||0,sw=+$('singleGateWidth').value||3,dw=+$('doubleGateWidth').value||6;
   const key=h+'-'+finish,p=CL[key]; if(!p)return null;
   const linePosts=Math.max(0,Math.ceil(lf/10)+1-terminals-2*sg-2*dg);
   const totalTerminal=terminals+2*sg+2*dg;
   const railPieces=Math.ceil(lf/21);
   const bags=Math.ceil((linePosts+totalTerminal)*2);
-  const markup=1+(data.settings.materialMarkup??25)/100;
+  const markup=1+(data.settings.materialMarkup??25)/100; const hdMarkup=1+(data.settings.homeDepotMarkup??50)/100;
   const qCost=(data.settings.quikrete??6.47);
   const rows=[
     ['Fabric',lf,p.fabric],
@@ -40,9 +41,14 @@ function clMaterialEstimate(){
     ['End bands',Math.max(2,terminals),p.endBand],
     ['Wire ties / bags of 100',Math.ceil(lf/100),p.wireTie],
     ['Carriage bolts',Math.max(4,totalTerminal*2),p.bolt],
-    ['Quikrete 80-lb bags',bags,qCost]
+    ['Quikrete 80-lb bags',bags,qCost*hdMarkup]
   ];
-  const base=rows.reduce((s,r)=>s+r[1]*r[2],0),material=base*markup;
+  const gateRows=[];
+  if(sg)gateRows.push(['Single swing gates ('+sw+' ft)',sg,GATES[h].single[sw]]);
+  if(dg)gateRows.push(['Double drive gates ('+dw+' ft)',dg,GATES[h].double[dw]]);
+  rows.push(...gateRows);
+  ];
+  const base=rows.reduce((s,r)=>s+r[1]*r[2],0),gateHomeDepot=false,material=base*markup;
   $('chainLinkBreakdown').innerHTML='<div class="material-list">'+rows.map(r=>'<div class="row pipeline-row"><span>'+r[0]+' <small class="mutedline">× '+r[1]+'</small></span><strong>'+money(r[1]*r[2]*markup)+'</strong></div>').join('')+'</div><div class="estimate-result"><div class="muted">Material cost before markup</div><strong>'+money(base)+'</strong><div class="muted">Apex material price (+25%)</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+'\' '+(finish==='black'?'black vinyl':'galvanized')+' · '+lf+' LF · 10-ft nominal post spacing · 2 × 80-lb bags/post</div></div>';
   return {base,material,rows,linePosts,totalTerminal,bags};
 }
@@ -55,8 +61,8 @@ function calcEstimate(){
   $('estimateResult').innerHTML='<div class="muted">Customer quote</div><div class="estimate-price">'+money(price)+'</div><div class="profit">Estimated gross profit: '+money(price-cost)+'</div><div class="mutedline">'+lf+' LF · Material '+money(mat)+' · Labor '+money(hours*rate)+' · Service '+money(service)+'</div>';
   return{lf,mat,h:hours,rate,service,markup,cost,price,chainLink:cl};
 }
-['lf','terminalPosts','singleGates','doubleGates','laborHours','laborRate','serviceCharge','markup'].forEach(id=>document.addEventListener('input',e=>{if(e.target.id===id)calcEstimate()}));document.addEventListener('change',e=>{if(['jobType','clHeight','clFinish','terminalPosts','singleGates','doubleGates'].includes(e.target.id))calcEstimate()});
-document.addEventListener('click',e=>{const p=e.target.closest('[data-preset]');if(!p)return;const s=data.settings;if(p.dataset.preset==='post1'){$('posts').value=1;$('materialCost').value=s.woodPost14+s.quikrete*s.bagsPerPost}if(p.dataset.preset==='post5'){$('posts').value=5;$('materialCost').value=s.woodPost5*5+s.quikrete*s.bagsPerPost*5}if(p.dataset.preset==='repair'){$('lf').value=10;$('materialCost').value=50;$('laborHours').value=2}if(p.dataset.preset==='reinstall'){$('lf').value=20;$('materialCost').value=20;$('laborHours').value=2}calcEstimate()});
+['lf','terminalPosts','singleGates','doubleGates','laborHours','laborRate','serviceCharge','markup'].forEach(id=>document.addEventListener('input',e=>{if(e.target.id===id)calcEstimate()}));document.addEventListener('change',e=>{if(['jobType','clHeight','clFinish','terminalPosts','singleGates','doubleGates','singleGateWidth','doubleGateWidth'].includes(e.target.id))calcEstimate()});
+document.addEventListener('click',e=>{const p=e.target.closest('[data-preset]');if(!p)return;const s=data.settings;if(p.dataset.preset==='repair'){$('jobType').value='Wood Repair';$('lf').value=10;$('laborHours').value=2}if(p.dataset.preset==='reinstall'){$('jobType').value='Wood Repair';$('lf').value=20;$('laborHours').value=2}calcEstimate()});
 $('applyRepairPreset').onclick=()=>{$('jobType').value='Wood Repair';$('serviceCharge').value=data.settings.serviceCharge;$('laborRate').value=data.settings.laborRate;$('markup').value=35;calcEstimate()};
 $('saveEstimate').onclick=()=>{const c=calcEstimate();data.estimates.unshift({id:crypto.randomUUID(),type:$('jobType').value,...c,createdAt:new Date().toISOString()});save();alert('Estimate saved.')};
 $('leadSearch').oninput=renderLeads;$('leadFilter').onchange=renderLeads;
@@ -69,4 +75,4 @@ $('importData').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new 
 $('resetData').onclick=()=>{if(confirm('Delete all CRM data from this browser? Export a backup first if needed.')){data=structuredClone(defaultData);save()}};
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;$('installBtn').classList.remove('hidden')});$('installBtn').onclick=async()=>{if(deferredInstall){deferredInstall.prompt();deferredInstall=null}};
 renderAll();
-$('jobType').addEventListener('change',()=>{const cl=$('jobType').value==='Chain Link Install';document.querySelectorAll('#clHeight,#clFinish,#terminalPosts,#singleGates,#doubleGates').forEach(x=>x.disabled=!cl);calcEstimate()});
+$('jobType').addEventListener('change',()=>{const cl=$('jobType').value==='Chain Link Install';document.querySelectorAll('#clHeight,#clFinish,#terminalPosts,#singleGates,#singleGateWidth,#doubleGates,#doubleGateWidth').forEach(x=>x.disabled=!cl);calcEstimate()});
