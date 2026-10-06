@@ -59,12 +59,15 @@ export async function onRequestPost({request, env}) {
         httpMetadata: {contentType: file.type || "application/octet-stream"},
         customMetadata: {leadId:id, originalName:String(file.name || "")}
       });
+      storedKeys.push(key);
       await env.DB.prepare(
         "INSERT INTO lead_photos (id,lead_id,object_key,filename,content_type,size_bytes,created_at) VALUES (?,?,?,?,?,?,?)"
       ).bind(photoId,id,key,String(file.name || "photo"),String(file.type || ""),file.size,now).run();
     }
   } catch (e) {
-    try { await env.DB.prepare("DELETE FROM online_leads WHERE id=?").bind(id).run(); } catch {}
+    const storedKeys = [];
+
+  try { await env.DB.prepare("DELETE FROM online_leads WHERE id=?").bind(id).run(); } catch {}
     return json({ok:false,error:"We could not save the estimate request. Please call Apex Fence directly."},500);
   }
 
