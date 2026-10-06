@@ -1,48 +1,65 @@
 # Apex Fence CRM
 
-A mobile-first CRM for Apex Fence.
+A mobile-first CRM and public website for Apex Fence.
 
-## Current architecture
+## What is in this repository
 
-- Public Apex Fence website
-- Apex Hub CRM
-- Existing local CRM storage remains intact
-- Cloudflare Pages + Pages Functions for server-side work
-- Cloudflare D1 for online lead records
-- Cloudflare R2 for private customer fence photos
-- Online lead sync into the existing CRM
-- Customer photo viewer inside the CRM
-- Installable PWA
+- Public Apex Fence website (`index.html`)
+- Apex Hub CRM (`crm.html`)
+- Local-first CRM data storage with JSON backup/restore
+- Estimate builder and customer quote printing
+- Cloudflare Pages Functions under `/functions`
+- D1 online lead database schema under `/migrations`
+- Private R2 customer photo storage
+- Authenticated online-lead sync and photo viewing
+- PWA manifest, install support, and service worker
+- Security headers middleware
+- Cloudflare deployment/setup documentation
 
-## Local CRM
+## Cloudflare production architecture
 
-The CRM continues to keep a browser-local copy so existing data and the current workflow are not lost.
+Customer → Apex website → Pages Function `/api/lead` → D1 + private R2 → Apex Hub CRM → authenticated photo viewer.
 
-## Cloudflare setup
-
-See [CLOUDFLARE-SETUP.md](CLOUDFLARE-SETUP.md).
-
-Required Cloudflare bindings:
-
+Required production resources:
+- Cloudflare Pages project connected to this GitHub repository
+- D1 database named `apex-fence-crm`
+- R2 bucket named `apex-fence-photos`
 - D1 binding: `DB`
 - R2 binding: `PHOTOS`
-- Secret: `APEX_CRM_TOKEN`
+- Encrypted secret: `APEX_CRM_TOKEN`
 
-The SQL schema is in `migrations/0001_online_leads.sql`.
+## Deployment
+
+This repository is designed for Cloudflare Pages Git integration. Pushes to `main` should deploy the connected Pages project automatically.
+
+The old GitHub Pages deployment workflow has been replaced with a repository validation workflow.
+
+## First-time Cloudflare setup
+
+Follow `CLOUDFLARE-SETUP.md`. The repo contains the application code, migration, local-development templates, validation workflow, and required binding names. Account-specific IDs and secrets are intentionally not committed.
+
+After the Pages project/resources exist, Cloudflare recommends downloading the real active Pages configuration with `npx wrangler pages download config` rather than guessing database IDs.
 
 ## Online estimate form
 
-The existing Apex estimate form now submits to the Cloudflare Pages Function at `/api/lead`.
+The public form posts to `/api/lead`.
 
-Customers can upload up to 5 fence photos:
-- JPEG
-- PNG
-- WebP
-- HEIC
-- HEIF
+Photos:
+- Maximum 5
+- JPEG, PNG, WebP, HEIC, HEIF
+- Maximum 8 MB each
+- Maximum 25 MB total
 
-Limits:
-- 8 MB per photo
-- 25 MB total
+Lead records go to D1. Photo files go to private R2. CRM reads leads through an authenticated bearer token; photos are not public.
 
-Photos are stored privately in R2 and are only served through the authenticated CRM photo endpoint.
+## Local development
+
+1. Copy `.dev.vars.example` to `.dev.vars` only for local testing.
+2. Never commit `.dev.vars`.
+3. Use `npx wrangler@latest`.
+4. After Cloudflare resources exist, use the downloaded Wrangler configuration for local bindings.
+5. Run `npx wrangler pages dev .`.
+
+## Backup
+
+The CRM remains local-first. Use Settings → Export Backup regularly, especially before changing devices.
