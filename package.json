@@ -1,0 +1,8 @@
+{
+  "name": "apex-fence-crm",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check app.js && node --check functions/api/lead.js && node --check functions/api/leads.js && node --check functions/api/photo.js && node --check functions/_middleware.js"
+  }
+}
