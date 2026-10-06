@@ -182,5 +182,5 @@ async function viewLeadPhotos(id){
 }
 
 $('syncOnlineLeads')?.addEventListener('click',syncOnlineLeads);
-renderAll();if($('activeEstimateNumber'))$('activeEstimateNumber').value=nextEstimateNumber();renderEstimatorFields();if(data.settings.crmToken) syncOnlineLeads();
+renderAll();if($('activeEstimateNumber'))$('activeEstimateNumber').value=nextEstimateNumber();renderEstimatorFields();if(data.settings.crmToken) syncOnlineLeads();if(data.settings.crmToken) syncOnlineLeads();
 $('jobType').addEventListener('change',()=>{const cl=$('jobType').value==='Chain Link Install';document.querySelectorAll('#clHeight,#clFinish,#terminalPosts,#singleGates,#singleGateWidth,#doubleGates,#doubleGateWidth').forEach(x=>x.disabled=!cl);renderEstimatorFields();calcEstimate()});
