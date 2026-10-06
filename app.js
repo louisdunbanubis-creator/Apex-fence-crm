@@ -181,5 +181,6 @@ async function viewLeadPhotos(id){
   }catch(e){gallery.innerHTML='<p class="muted">Unable to load customer photos.</p>'}
 }
 
+$('syncOnlineLeads')?.addEventListener('click',syncOnlineLeads);
 renderAll();if($('activeEstimateNumber'))$('activeEstimateNumber').value=nextEstimateNumber();renderEstimatorFields();
 $('jobType').addEventListener('change',()=>{const cl=$('jobType').value==='Chain Link Install';document.querySelectorAll('#clHeight,#clFinish,#terminalPosts,#singleGates,#singleGateWidth,#doubleGates,#doubleGateWidth').forEach(x=>x.disabled=!cl);renderEstimatorFields();calcEstimate()});
