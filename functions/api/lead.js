@@ -47,6 +47,8 @@ export async function onRequestPost({request, env}) {
   const id = crypto.randomUUID();
   const now = new Date().toISOString();
 
+  const storedKeys = [];
+
   try {
     await env.DB.prepare(
       "INSERT INTO online_leads (id,name,phone,email,address,project_type,details,status,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)"
@@ -59,6 +61,7 @@ export async function onRequestPost({request, env}) {
         httpMetadata: {contentType: file.type || "application/octet-stream"},
         customMetadata: {leadId:id, originalName:String(file.name || "")}
       });
+      storedKeys.push(key);
       storedKeys.push(key);
       await env.DB.prepare(
         "INSERT INTO lead_photos (id,lead_id,object_key,filename,content_type,size_bytes,created_at) VALUES (?,?,?,?,?,?,?)"
