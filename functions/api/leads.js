@@ -18,7 +18,8 @@ export async function onRequestGet({request,env}) {
   if (!authorized(request,env)) return unauthorized();
   if (!env.DB) return json({ok:false,error:"D1 is not connected."},503);
 
-  const rows = await env.DB.prepare(
+  try {
+    const rows = await env.DB.prepare(
     "SELECT id,name,phone,email,address,project_type,details,status,created_at,updated_at FROM online_leads ORDER BY created_at DESC LIMIT 200"
   ).all();
 
@@ -37,5 +38,8 @@ export async function onRequestGet({request,env}) {
       }))
     });
   }
-  return json({ok:true,leads});
+    return json({ok:true,leads});
+  } catch (e) {
+    return json({ok:false,error:"Unable to load online leads."},500);
+  }
 }
