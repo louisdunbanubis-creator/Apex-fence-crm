@@ -7,7 +7,8 @@ export async function onRequestGet({request,env}) {
   if (!env.PHOTOS) return new Response("Photo storage is not connected.",{status:503});
   const key = new URL(request.url).searchParams.get("key");
   if (!key || !key.startsWith("leads/")) return new Response("Not found",{status:404});
-  const object = await env.PHOTOS.get(key);
+  let object;
+  try { object = await env.PHOTOS.get(key); } catch { return new Response("Photo storage error.",{status:503}); }
   if (!object) return new Response("Not found",{status:404});
   const headers = new Headers();
   object.writeHttpMetadata(headers);
