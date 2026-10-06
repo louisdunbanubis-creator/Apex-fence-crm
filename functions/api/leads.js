@@ -19,6 +19,7 @@ export async function onRequestGet({request,env}) {
   if (!env.DB) return json({ok:false,error:"D1 is not connected."},503);
 
   try {
+    try {
     const rows = await env.DB.prepare(
     "SELECT id,name,phone,email,address,project_type,details,status,created_at,updated_at FROM online_leads ORDER BY created_at DESC LIMIT 200"
   ).all();
