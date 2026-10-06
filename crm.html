@@ -94,7 +94,7 @@
     </div>
     <button class="primary" id="saveSettings">Save Settings</button>
   </div>
-  <div class="card danger-zone"><h2>Data</h2><p class="muted">V1 is local-first. Export a backup before changing devices.</p><div class="row gap"><button class="secondary" id="exportData">Export Backup</button><label class="file-btn">Import Backup<input id="importData" type="file" accept=".json" hidden></label><button class="danger" id="resetData">Reset CRM</button></div></div>
+  <div class="card"><h2>Online estimates & customer photos</h2><p class="muted">Cloudflare stores website leads in D1 and customer fence photos in private R2 storage. Paste the secret token you created in Cloudflare, then sync.</p><label>Cloudflare CRM token<input id="crmToken" type="password" placeholder="Paste APEX_CRM_TOKEN"></label><div class="row gap form-actions"><button class="primary" id="syncOnlineLeads">Sync Online Leads</button><div id="onlineSyncStatus" class="form-status" role="status"></div></div></div><div class="card danger-zone"><h2>Data</h2><p class="muted">V1 is local-first. Export a backup before changing devices.</p><div class="row gap"><button class="secondary" id="exportData">Export Backup</button><label class="file-btn">Import Backup<input id="importData" type="file" accept=".json" hidden></label><button class="danger" id="resetData">Reset CRM</button></div></div>
 </section>
 </main>
 
