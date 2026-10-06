@@ -1,4 +1,4 @@
-const KEY='apexFenceCRM.v1';const defaultData={leads:[],jobs:[],estimates:[],settings:{laborRate:45,serviceCharge:175,materialMarkup:25,homeDepotMarkup:50,woodPost14:125,woodPost5:100,woodPicketHD:4.28,woodRailHD:28.51,woodPostHD:12.98,woodNailsHD:21,quikrete:6.47, bagsPerPost:2,woodRepairLF:25,reinstallLF:10,businessName:'Apex Fence',businessEmail:'Apexinstallsne@gmail.com',businessPhone:'',crmToken:''}};let data=load();let deferredInstall=null;
+const KEY='apexFenceCRM.v1';const defaultData={leads:[],jobs:[],estimates:[],settings:{laborRate:45,serviceCharge:175,materialMarkup:25,homeDepotMarkup:50,woodPost14:125,woodPost5:100,woodPicketHD:4.28,woodRailHD:28.51,woodPostHD:12.98,woodNailsHD:21,quikrete:6.47, bagsPerPost:1,woodRepairLF:25,reinstallLF:10,businessName:'Apex Fence',businessEmail:'Apexinstallsne@gmail.com',businessPhone:'',crmToken:''}};let data=load();let deferredInstall=null;
 function load(){try{return {...defaultData,...JSON.parse(localStorage.getItem(KEY)||'{}'),settings:{...defaultData.settings,...(JSON.parse(localStorage.getItem(KEY)||'{}').settings||{})}}}catch{return structuredClone(defaultData)}}function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}function money(n){return '$'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
 function $(id){return document.getElementById(id)}function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function showView(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));window.scrollTo(0,0)}
@@ -22,12 +22,12 @@ const CL={
 };
 function clMaterialEstimate(){
   const lf=+$('lf').value||0,h=+$('clHeight').value||4,finish=$('clFinish').value||'galv';
-  const terminals=Math.max(2,+$('terminalPosts').value||2),sg=+$('singleGates').value||0,dg=+$('doubleGates').value||0,sw=+$('singleGateWidth').value||3,dw=+$('doubleGateWidth').value||6;
+  const terminals=Math.max(2,+$('terminalPosts').value||2),sg=+$('singleGates').value||0,dg=+$('doubleGates').value||0,sw=+$('singleGateWidth')?.value||3,dw=+$('doubleGateWidth')?.value||6;
   const key=h+'-'+finish,p=CL[key]; if(!p)return null;
   const linePosts=Math.max(0,Math.ceil(lf/10)+1-terminals-2*sg-2*dg);
   const totalTerminal=terminals+2*sg+2*dg;
   const railPieces=Math.ceil(lf/21);
-  const bags=Math.ceil((linePosts+totalTerminal)*2);
+  const bags=Math.ceil((linePosts+totalTerminal)*(data.settings.bagsPerPost??1));
   const materialMarkup=1+(data.settings.materialMarkup??25)/100;
   const homeDepotMarkup=1+(data.settings.homeDepotMarkup??50)/100;
   const qCost=(data.settings.quikrete??6.47);
@@ -55,7 +55,7 @@ function clMaterialEstimate(){
   const material=americanPrice+concretePrice;
   $('chainLinkBreakdown').innerHTML='<div class="material-list">'+rows.map(r=>'<div class="row pipeline-row"><span>'+r[0]+' <small class="mutedline">× '+r[1]+'</small></span><strong>'+money(r[1]*r[2]*materialMarkup)+'</strong></div>').join('')+
   '<div class="row pipeline-row"><span>Quikrete 80-lb bags <small class="mutedline">× '+bags+' · Home Depot +50%</small></span><strong>'+money(concretePrice)+'</strong></div></div>'+
-  '<div class="estimate-result"><div class="muted">American Fence material cost</div><strong>'+money(americanBase)+'</strong><div class="muted">Apex American Fence material price (+25%)</div><strong>'+money(americanPrice)+'</strong><div class="muted">Total material price</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+"' "+(finish==='black'?'black vinyl':'galvanized')+' · '+lf+' LF · 10-ft nominal post spacing · 2 × 80-lb bags/post</div></div>';
+  '<div class="estimate-result"><div class="muted">American Fence material cost</div><strong>'+money(americanBase)+'</strong><div class="muted">Apex American Fence material price (+25%)</div><strong>'+money(americanPrice)+'</strong><div class="muted">Total material price</div><div class="estimate-price">'+money(material)+'</div><div class="mutedline">'+h+"' "+(finish==='black'?'black vinyl':'galvanized')+' · '+lf+' LF · 10-ft nominal post spacing · '+(data.settings.bagsPerPost??1)+' × 80-lb bags/post</div></div>';
   return {americanBase,americanPrice,concretePrice,material,rows,linePosts,totalTerminal,bags};
 }
 const WOOD_WALK_GATES={3:350,4:400,5:475};
@@ -182,5 +182,5 @@ async function viewLeadPhotos(id){
 }
 
 $('syncOnlineLeads')?.addEventListener('click',syncOnlineLeads);
-renderAll();if($('activeEstimateNumber'))$('activeEstimateNumber').value=nextEstimateNumber();renderEstimatorFields();
+renderAll();if($('activeEstimateNumber'))$('activeEstimateNumber').value=nextEstimateNumber();renderEstimatorFields();if(data.settings.crmToken) syncOnlineLeads();
 $('jobType').addEventListener('change',()=>{const cl=$('jobType').value==='Chain Link Install';document.querySelectorAll('#clHeight,#clFinish,#terminalPosts,#singleGates,#singleGateWidth,#doubleGates,#doubleGateWidth').forEach(x=>x.disabled=!cl);renderEstimatorFields();calcEstimate()});
