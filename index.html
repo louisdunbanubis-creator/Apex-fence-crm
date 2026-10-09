@@ -5,408 +5,90 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0a0c0f">
 <meta name="description" content="Apex Fence — professional fence installation, repair, staining and maintenance in Omaha, Nebraska.">
-<title>Apex Fence — Built Strong. Installed Right.</title>
+<title>Apex Fence — Quality at Its Peak</title>
 <style>
-:root{
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:#1a1f26;
-  background:#fff;
-  --ink:#1a1f26;
-  --muted:#5c6570;
-  --steel:#6b7280;
-  --blue:#3b5bdb;
-  --line:#e5e7eb;
-  --soft:#f8f9fb;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:#fff;color:var(--ink);line-height:1.5}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-.wrap{width:min(1140px,calc(100% - 48px));margin:0 auto}
-
-/* ── Header ── */
-.site-header{
-  background:#fff;
-  border-bottom:1px solid var(--line);
-  position:sticky;top:0;z-index:50;
-}
-.nav{
-  height:72px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:24px;
-}
-.brand{
-  display:flex;align-items:center;gap:12px;flex-shrink:0;
-}
-.brand-icon{
-  width:42px;height:42px;
-  display:flex;align-items:center;justify-content:center;
-}
-.brand-icon svg{width:42px;height:32px}
-.brand-text{display:flex;flex-direction:column;line-height:1.15}
-.brand-name{
-  font-size:18px;font-weight:800;letter-spacing:.04em;
-  color:#111;text-transform:uppercase;
-}
-.brand-tag{
-  font-size:9px;font-weight:600;letter-spacing:.14em;
-  color:#8b939e;text-transform:uppercase;margin-top:2px;
-}
-.navlinks{
-  display:flex;align-items:center;gap:28px;
-  font-size:13px;font-weight:600;color:#4b5563;letter-spacing:.02em;
-}
-.navlinks a{position:relative;padding:4px 0}
-.navlinks a:hover,.navlinks a.active{color:#111}
-.navlinks a.active::after{
-  content:"";position:absolute;left:0;right:0;bottom:-4px;
-  height:2px;background:var(--blue);border-radius:1px;
-}
-.nav-phone{
-  display:inline-flex;align-items:center;gap:8px;
-  border:1.5px solid #d1d5db;border-radius:8px;
-  padding:9px 16px;font-size:13px;font-weight:600;color:#374151;
-  white-space:nowrap;transition:all .15s;
-}
-.nav-phone:hover{border-color:#9ca3af;background:#f9fafb}
-.nav-phone svg{width:16px;height:16px;flex-shrink:0}
-
-/* ── Hero ── */
-.hero{
-  position:relative;
-  padding:72px 0 80px;
-  overflow:hidden;
-  background:#fff;
-}
-.hero-inner{
-  position:relative;z-index:2;
-  max-width:560px;
-}
-.hero-eyebrow{
-  font-size:12px;font-weight:700;letter-spacing:.18em;
-  color:#6b7280;text-transform:uppercase;margin-bottom:18px;
-}
-.hero h1{
-  font-size:clamp(42px,6.5vw,64px);
-  font-weight:800;line-height:1.08;
-  letter-spacing:-.02em;margin-bottom:20px;color:#111;
-}
-.hero h1 .blue{color:var(--blue)}
-.hero-lead{
-  font-size:17px;line-height:1.7;color:var(--muted);
-  max-width:480px;margin-bottom:32px;
-}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
-  background:#111;color:#fff;
-  padding:14px 24px;border-radius:8px;
-  font-size:14px;font-weight:700;letter-spacing:.02em;
-  transition:background .15s;
-}
-.btn-primary:hover{background:#1f2937}
-.btn-primary svg{width:16px;height:16px}
-
-/* Mountain watermark */
-.hero-mtn{
-  position:absolute;right:-4%;bottom:0;
-  width:58%;height:92%;
-  opacity:.07;pointer-events:none;z-index:1;
-  background:url('images/image.png') right bottom / contain no-repeat;
-}
-
-/* ── Services ── */
-.services-section{
-  padding:64px 0 88px;
-  border-top:1px solid var(--line);
-}
-.section-label{
-  font-size:11px;font-weight:700;letter-spacing:.16em;
-  color:#6b7280;text-transform:uppercase;margin-bottom:10px;
-}
-.section-title{
-  font-size:clamp(26px,3.5vw,34px);font-weight:800;
-  color:#111;margin-bottom:40px;letter-spacing:-.01em;
-  display:flex;align-items:center;gap:16px;
-}
-.section-title::after{
-  content:"";flex:1;height:1px;background:var(--line);max-width:120px;
-}
-.services-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:20px;
-}
-.service-card{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  overflow:hidden;
-  transition:box-shadow .2s,border-color .2s;
-}
-.service-card:hover{
-  box-shadow:0 12px 32px rgba(17,21,26,.08);
-  border-color:#d1d5db;
-}
-.service-card .card-img{
-  height:160px;overflow:hidden;background:#f3f4f6;
-}
-.service-card .card-img img{
-  width:100%;height:100%;object-fit:cover;
-}
-.service-card .card-body{
-  padding:20px 18px 22px;
-}
-.service-card .card-icon{
-  width:28px;height:28px;margin-bottom:10px;
-  color:var(--blue);
-}
-.service-card h3{
-  font-size:15px;font-weight:700;color:#111;margin-bottom:8px;
-}
-.service-card p{
-  font-size:13px;line-height:1.55;color:var(--muted);margin-bottom:14px;
-}
-.service-card .learn{
-  font-size:12px;font-weight:700;color:var(--blue);
-  display:inline-flex;align-items:center;gap:4px;
-}
-.service-card .learn:hover{text-decoration:underline}
-
-/* ── Why / Estimate keep functional ── */
-.section{padding:72px 0;border-top:1px solid var(--line)}
-.section h2{font-size:30px;font-weight:800;margin:8px 0 14px;color:#111}
-.section-intro{color:var(--muted);max-width:640px;line-height:1.7;font-size:16px}
-.why{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
-.why .item{
-  padding:22px;border:1px solid var(--line);border-radius:10px;
-  border-left:3px solid #111;
-}
-.why strong{display:block;margin-bottom:6px;font-size:15px}
-.why span{color:var(--muted);font-size:14px;line-height:1.55}
-.estimate{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
-.form{
-  background:#fff;border:1px solid var(--line);border-radius:12px;
-  padding:28px;box-shadow:0 8px 28px rgba(17,21,26,.05);
-}
-.form h3{margin-bottom:16px;font-size:18px}
-.fields{display:grid;gap:12px}
-.fields input,.fields select,.fields textarea{
-  width:100%;background:#f8f9fa;color:#111;
-  border:1px solid #d1d5db;border-radius:7px;padding:12px 14px;font:inherit;
-}
-.fields textarea{min-height:100px;resize:vertical}
-.form-note{font-size:11px;color:#8b939e;line-height:1.5;margin-top:12px}
-.contactbox{
-  margin-top:24px;padding:16px 18px;
-  border:1px solid var(--line);border-radius:8px;background:#fafbfc;
-}
-.contactbox strong{display:block;margin-bottom:4px}
-.uploadbox{
-  border:1px solid #d1d5db;background:#f8f9fa;border-radius:8px;padding:14px;
-}
-.uploadbox label{display:block;cursor:pointer}
-.uploadbox strong{display:block;font-size:12px;letter-spacing:.04em}
-.uploadbox strong span{color:#8b939e;font-weight:600}
-.uploadbox small{display:block;color:#8b939e;margin-top:4px;line-height:1.4;font-size:12px}
-.uploadbox input{margin-top:10px;border:0;padding:0;background:transparent}
-.photo-preview{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
-.photo-preview:empty{display:none}
-.photo-preview img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:5px;border:1px solid #d1d5db}
-.form-status{
-  display:none;margin-top:12px;padding:11px;border-radius:7px;
-  background:#f3f4f6;border:1px solid #e5e7eb;color:#4b5563;font-size:13px;line-height:1.5;
-}
-.form-status.show{display:block}
-footer{
-  padding:32px 0;border-top:1px solid var(--line);
-  color:#8b939e;font-size:12px;background:#fff;
-}
-footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-
-/* ── Responsive ── */
-@media(max-width:960px){
-  .services-grid{grid-template-columns:repeat(2,1fr)}
-  .navlinks{display:none}
-}
-@media(max-width:700px){
-  .hero{padding:48px 0 56px}
-  .hero-mtn{width:80%;opacity:.05}
-  .estimate,.why{grid-template-columns:1fr}
-  .services-grid{grid-template-columns:1fr}
-  .nav-phone{display:none}
-  .brand-tag{display:none}
-}
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#11151a;background:#fff;--black:#080a0d;--ink:#11151a;--muted:#626a74;--steel:#8c949d;--line:#d9dde2;--card:#fff;--ghost:#7f8791}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:var(--ink)}a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}
+.site-header{background:#0a0c0f;border-bottom:1px solid #1a1e24;position:relative;overflow:hidden}.nav{height:82px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}.brand{display:flex;align-items:center;gap:14px}.header-logo{height:52px;width:auto;display:block;object-fit:contain}.brand-text{display:flex;flex-direction:column;line-height:1.15}.brand-name{font-size:17px;font-weight:800;letter-spacing:.06em;color:#fff;text-transform:uppercase}.brand-tag{font-size:9px;font-weight:600;letter-spacing:.14em;color:#8c949d;text-transform:uppercase;margin-top:2px}.navlinks{display:flex;gap:28px;color:#c5cdd5;font-size:14px;font-weight:800}.navlinks a:hover{color:#fff}.navcta{border:1px solid #8c949d;padding:10px 15px;border-radius:6px;color:#fff;background:transparent}.navcta:hover{background:#fff;color:#0a0c0f}
+.hero{min-height:560px;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:60px;position:relative;overflow:hidden;padding:40px 0}.hero:after{content:"";position:absolute;right:-2%;bottom:0;width:50%;height:90%;opacity:0.06;pointer-events:none;z-index:0;background:url('images/image.png') right bottom / contain no-repeat}.hero>*{position:relative;z-index:1}.eyebrow{color:#6d7580;font-size:11px;font-weight:900;letter-spacing:.24em}.hero h1{font-size:clamp(48px,7vw,82px);line-height:.92;margin:16px 0;color:#0b0d10}.hero h1 span{display:block;color:#6e7680}.hero p{max-width:610px;color:#555e69;font-size:19px;line-height:1.65}.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 20px;border-radius:6px;font-weight:900}.btn.primary{background:#0b0d10;color:#fff}.btn.dark{border:1px solid #b5bbc2;background:#fff}.trust{display:flex;gap:28px;flex-wrap:wrap;margin-top:36px;color:#737b85;font-size:12px;font-weight:800;letter-spacing:.08em}.business-card{border:1px solid #d5dae0;border-radius:12px;padding:34px;background:#fff;box-shadow:0 18px 45px rgba(17,21,26,.07);position:relative;overflow:hidden;color:#11151a}.business-card h2{font-size:29px;letter-spacing:.08em;margin:0}.business-card .steel-line{height:2px;width:72px;background:#11151a;margin:18px 0}.business-card ul{list-style:none;padding:0;margin:22px 0}.business-card li{padding:8px 0;color:#626a74;border-bottom:1px solid #e0e3e7}.business-card li:last-child{border:0}.business-card .verse{margin-top:26px;color:#7a828c;font-size:11px;letter-spacing:.12em}
+.section{padding:88px 0;border-top:1px solid #e0e3e7}.section h2{font-size:38px;margin:10px 0 14px;color:#0d1014}.section-intro{color:#626a74;max-width:680px;line-height:1.7}.services{display:grid;gap:18px;margin-top:34px}.service{min-height:285px;position:relative;overflow:hidden;background:#fff;border:1px solid #d5dae0;border-radius:14px;box-shadow:0 14px 34px rgba(17,21,26,.07);padding:34px 52% 34px 30px}.service:after{content:"";position:absolute;inset:0 0 0 43%;background:var(--fence-image) center/cover no-repeat;z-index:0}.service:before{content:"";position:absolute;inset:0 45% 0 0;background:linear-gradient(90deg,#fff 0%,#fff 70%,rgba(255,255,255,.94) 100%);z-index:1}.service-content{position:relative;z-index:3}.service strong{font-size:27px;letter-spacing:.02em;color:#11151a;text-transform:uppercase}.service p{color:#626a74;font-size:15px;line-height:1.65;max-width:430px}.service .photo-label{display:inline-block;margin-top:8px;font-size:10px;font-weight:900;letter-spacing:.18em;color:#7b838d}
+.why{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:32px}.why .item{padding:25px;border-left:3px solid #1a1e23;background:#fff;border:1px solid #e0e3e7;border-radius:8px}.why strong{display:block;margin-bottom:7px}.why span{color:#626a74;line-height:1.6;font-size:14px}.estimate{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}.form{background:#fff;border:1px solid #d5dae0;border-radius:12px;padding:28px;box-shadow:0 18px 45px rgba(17,21,26,.07)}.form h3{margin-top:0}.fields{display:grid;gap:12px}.fields input,.fields select,.fields textarea{width:100%;background:#f8f9fa;color:#11151a;border:1px solid #cfd4da;border-radius:6px;padding:13px;font:inherit}.fields textarea{min-height:110px;resize:vertical}.form-note{font-size:11px;color:#7a828c;line-height:1.5;margin-top:12px}.contactbox{margin-top:30px;padding:18px;border:1px solid #d6dbe0;background:#fff;border-radius:8px}.contactbox strong{display:block;color:#11151a;margin-bottom:5px}.uploadbox{border:1px solid #cfd4da;background:#f8f9fa;border-radius:7px;padding:14px}.uploadbox label{display:block;cursor:pointer}.uploadbox strong{display:block;font-size:12px;letter-spacing:.06em}.uploadbox strong span{color:#7f8791;font-weight:700}.uploadbox small{display:block;color:#858c97;margin-top:5px;line-height:1.45}.uploadbox input{margin-top:12px;border:0;padding:0;background:transparent}.photo-preview{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:10px}.photo-preview:empty{display:none}.photo-preview img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:5px;border:1px solid #cfd4da}.form-status{display:none;margin-top:12px;padding:11px;border-radius:6px;background:#f1f3f5;border:1px solid #d7dce1;color:#454d56;font-size:13px;line-height:1.5}.form-status.show{display:block}footer{padding:38px 0;border-top:1px solid #dfe3e7;color:#737b85;font-size:12px;background:#fff}footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:800px){.navlinks{display:none}.nav{height:76px}.hero,.estimate{grid-template-columns:1fr}.hero{padding:70px 0 90px}.business-card{max-width:600px}.section{padding:65px 0}.service{min-height:300px;padding:28px 28px 210px}.service:after{inset:48% 0 0}.service:before{inset:0 0 48% 0;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.96) 72%,rgba(255,255,255,.1) 100%)}.why{grid-template-columns:1fr}.brand-tag{display:none}}
+@media(max-width:480px){.wrap{width:min(100% - 28px,1120px)}.header-logo{height:40px}.hero h1{font-size:50px}.trust{gap:14px}.business-card{padding:25px}.services{gap:14px}.service{min-height:290px;padding-bottom:195px}.photo-preview{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
 <header class="site-header">
   <div class="nav wrap">
     <a href="#" class="brand">
-      <div class="brand-icon">
-        <svg viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 42 L22 14 L32 28 L42 8 L58 36 L68 22 L78 42 Z" fill="#1a1f26"/>
-          <path d="M8 42 L22 14 L32 28 L42 8 L58 36 L68 22 L78 42 Z" fill="url(#g)" opacity=".9"/>
-          <defs><linearGradient id="g" x1="0" y1="0" x2="80" y2="50"><stop stop-color="#4b5563"/><stop offset="1" stop-color="#111"/></linearGradient></defs>
-        </svg>
-      </div>
+      <img src="images/image.png" alt="Apex Fence" class="header-logo" width="180" height="60" onerror="this.style.display='none'">
       <div class="brand-text">
         <span class="brand-name">Apex Fence</span>
-        <span class="brand-tag">Stronger Boundaries. Elevated Trust.</span>
+        <span class="brand-tag">Quality at Its Peak</span>
       </div>
     </a>
-    <nav class="navlinks">
-      <a href="#" class="active">Home</a>
-      <a href="#services">Services</a>
-      <a href="#why">About</a>
-      <a href="#estimate">Contact</a>
-    </nav>
-    <a href="#estimate" class="nav-phone">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-      Get a Free Quote
-    </a>
+    <nav class="navlinks"><a href="#services">Services</a><a href="#why">Why Apex</a><a href="#estimate">Free Estimate</a><a class="navcta" href="#estimate">GET STARTED</a></nav>
   </div>
 </header>
-
 <main>
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-inner">
-      <div class="hero-eyebrow">Premium Fences. Built to Last.</div>
-      <h1>Built Strong.<br><span class="blue">Installed Right.</span></h1>
-      <p class="hero-lead">Apex Fence delivers high-quality fencing solutions for residential, commercial, and industrial properties. Strength. Durability. Peace of mind.</p>
-      <a href="#estimate" class="btn-primary">
-        Get a Free Quote
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-    </div>
+<section class="hero wrap">
+  <div>
+    <div class="eyebrow">RESIDENTIAL • COMMERCIAL • REPAIRS</div>
+    <h1>Built Strong.<span>Installed Right.</span></h1>
+    <p>Apex Fence provides professional fence installation, repairs, staining and maintenance with the workmanship and attention to detail you expect from a serious local contractor.</p>
+    <div class="buttons"><a class="btn primary" href="#estimate">GET A FREE ESTIMATE</a><a class="btn dark" href="#services">VIEW SERVICES</a></div>
+    <div class="trust"><span>FREE ESTIMATES</span><span>FAST TURNAROUND</span><span>FAIR PRICING</span></div>
   </div>
-  <div class="hero-mtn" aria-hidden="true"></div>
+  <aside class="business-card">
+    <div class="eyebrow" style="color:#aeb5bd">APEX FENCE</div><h2>QUALITY<br>AT ITS PEAK.</h2><div class="steel-line"></div>
+    <ul><li>Residential & Commercial</li><li>Repairs & Maintenance</li><li>Staining & Restoration</li><li>Local • Affordable • Experienced</li></ul>
+    <div class="verse">1 CORINTHIANS 15:58</div>
+  </aside>
 </section>
-
-<!-- SERVICES -->
-<section class="services-section" id="services">
-  <div class="wrap">
-    <div class="section-label">Our Services</div>
-    <h2 class="section-title">Fencing Solutions for Every Need</h2>
-    <div class="services-grid">
-
-      <article class="service-card">
-        <div class="card-img"><img src="images/IMG_0899.webp" alt="Wood residential fencing" loading="lazy"></div>
-        <div class="card-body">
-          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
-          <h3>Residential Fencing</h3>
-          <p>Enhance your home's curb appeal and security with beautifully crafted fences built to protect what matters.</p>
-          <a href="#estimate" class="learn">Learn more →</a>
-        </div>
-      </article>
-
-      <article class="service-card">
-        <div class="card-img"><img src="images/IMG_0900.jpeg" alt="Commercial fencing" loading="lazy"></div>
-        <div class="card-body">
-          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="1"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-          <h3>Commercial Fencing</h3>
-          <p>Professional fencing solutions designed for businesses that prioritize security, compliance, and presentation.</p>
-          <a href="#estimate" class="learn">Learn more →</a>
-        </div>
-      </article>
-
-      <article class="service-card">
-        <div class="card-img"><img src="images/IMG_0901.jpeg" alt="Vinyl and industrial fencing" loading="lazy"></div>
-        <div class="card-body">
-          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-          <h3>Vinyl & Chain Link</h3>
-          <p>Low-maintenance vinyl and durable chain link systems for residential and commercial properties.</p>
-          <a href="#estimate" class="learn">Learn more →</a>
-        </div>
-      </article>
-
-      <article class="service-card">
-        <div class="card-img"><img src="image.jpeg" alt="Ornamental and custom fencing" loading="lazy"></div>
-        <div class="card-body">
-          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          <h3>Custom & Ornamental</h3>
-          <p>Tailored fence designs that match your style, property, and functional needs—down to every detail.</p>
-          <a href="#estimate" class="learn">Learn more →</a>
-        </div>
-      </article>
-
-    </div>
+<section class="section" id="services"><div class="wrap">
+  <div class="eyebrow">WHAT WE DO</div><h2>One fence company. Every style.</h2><p class="section-intro">From a small repair that bigger companies don't want to touch to a complete new fence, Apex Fence handles the job with a straightforward approach and professional workmanship.</p>
+  <div class="services">
+    <article class="service" style="--fence-image:url('images/IMG_0899.webp')"><div class="service-content"><strong>Wood</strong><p>Shadow box, board-on-board, privacy fences, repairs, posts, gates, staining and restoration.</p><span class="photo-label">WOOD FENCING</span></div></article>
+    <article class="service" style="--fence-image:url('images/IMG_0901.jpeg')"><div class="service-content"><strong>Vinyl</strong><p>Installation and repairs for clean, low-maintenance fencing.</p><span class="photo-label">VINYL FENCING</span></div></article>
+    <article class="service" style="--fence-image:url('images/IMG_0900.jpeg')"><div class="service-content"><strong>Chain Link</strong><p>Galvanized and black vinyl systems, repairs and installation.</p><span class="photo-label">CHAIN LINK FENCING</span></div></article>
+    <article class="service" style="--fence-image:url('image.jpeg')"><div class="service-content"><strong>Ornamental</strong><p>Steel and ornamental fence repairs and maintenance.</p><span class="photo-label">ORNAMENTAL / STEEL</span></div></article>
   </div>
-</section>
-
-<!-- WHY APEX -->
-<section class="section" id="why">
-  <div class="wrap">
-    <div class="section-label">Why Apex</div>
-    <h2>Small business attention.<br>Professional results.</h2>
-    <p class="section-intro">From a small repair that bigger companies don't want to touch to a complete new fence, Apex Fence handles the job with a straightforward approach and professional workmanship.</p>
-    <div class="why">
-      <div class="item"><strong>We actually answer the smaller jobs.</strong><span>Fence repairs and maintenance are a major part of what we do — not an afterthought.</span></div>
-      <div class="item"><strong>Clear, fair estimates.</strong><span>You get a straightforward price and a clear understanding of the work before the job starts.</span></div>
-      <div class="item"><strong>Experienced across fence styles.</strong><span>Wood, vinyl, chain link and ornamental systems are all part of the Apex wheelhouse.</span></div>
-      <div class="item"><strong>Local and responsive.</strong><span>We keep the process simple, communicate directly and focus on getting the job done right.</span></div>
-    </div>
+</div></section>
+<section class="section" id="why"><div class="wrap">
+  <div class="eyebrow">WHY APEX</div><h2>Small business attention.<br>Professional results.</h2>
+  <div class="why">
+    <div class="item"><strong>We actually answer the smaller jobs.</strong><span>Fence repairs and maintenance are a major part of what we do — not an afterthought.</span></div>
+    <div class="item"><strong>Clear, fair estimates.</strong><span>You get a straightforward price and a clear understanding of the work before the job starts.</span></div>
+    <div class="item"><strong>Experienced across fence styles.</strong><span>Wood, vinyl, chain link and ornamental systems are all part of the Apex wheelhouse.</span></div>
+    <div class="item"><strong>Local and responsive.</strong><span>We keep the process simple, communicate directly and focus on getting the job done right.</span></div>
   </div>
-</section>
-
-<!-- ESTIMATE FORM -->
-<section class="section" id="estimate">
-  <div class="wrap estimate">
-    <div>
-      <div class="section-label">Start Your Project</div>
-      <h2>Let's take a look at your fence.</h2>
-      <p class="section-intro">Tell us what you need. A member of the Apex Fence team can review the project and get back to you about a free estimate.</p>
-      <div class="contactbox"><strong>Apex Fence</strong><span>Apexinstallsne@gmail.com</span></div>
-    </div>
-    <form class="form" id="estimateForm" action="/api/lead" method="post" enctype="multipart/form-data">
-      <h3>Request a Free Estimate</h3>
-      <div class="fields">
-        <input name="Name" placeholder="Name" required>
-        <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
-        <input name="Phone" placeholder="Phone / Text" type="tel" required>
-        <input name="Email" placeholder="Email" type="email">
-        <input name="Address" placeholder="Project address" required>
-        <select name="Project Type">
-          <option>Fence Repair</option>
-          <option>New Fence Installation</option>
-          <option>Fence Staining</option>
-          <option>Fence Removal</option>
-          <option>Gate Repair / Installation</option>
-          <option>Other</option>
-        </select>
-        <textarea name="Project Details" placeholder="Tell us a little about the project. You can mention fence type, approximate length, damage, gates, etc."></textarea>
-        <div class="uploadbox">
-          <label for="photos">
-            <strong>PHOTOS OF THE FENCE <span>(OPTIONAL)</span></strong>
-            <small>Photos help us understand repairs before we come out. Select up to 5 images.</small>
-          </label>
-          <input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple>
-          <div id="photoPreview" class="photo-preview" aria-live="polite"></div>
-        </div>
-        <button class="btn-primary" type="submit" style="border:0;cursor:pointer;width:100%;justify-content:center">Send Request</button>
-      </div>
-      <div id="formStatus" class="form-status" role="status"></div>
-      <div class="form-note">Your project details and optional fence photos are sent securely to Apex Fence for review.</div>
-    </form>
+</div></section>
+<section class="section" id="estimate"><div class="wrap estimate">
+  <div><div class="eyebrow">START YOUR PROJECT</div><h2>Let's take a look at your fence.</h2><p class="section-intro">Tell us what you need. A member of the Apex Fence team can review the project and get back to you about a free estimate.</p>
+    <div class="contactbox"><strong>Apex Fence</strong><span>Apexinstallsne@gmail.com</span></div>
   </div>
-</section>
+  <form class="form" id="estimateForm" action="/api/lead" method="post" enctype="multipart/form-data">
+    <h3>Request a Free Estimate</h3>
+    <div class="fields">
+      <input name="Name" placeholder="Name" required><input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
+      <input name="Phone" placeholder="Phone / Text" type="tel" required>
+      <input name="Email" placeholder="Email" type="email">
+      <input name="Address" placeholder="Project address" required>
+      <select name="Project Type"><option>Fence Repair</option><option>New Fence Installation</option><option>Fence Staining</option><option>Fence Removal</option><option>Gate Repair / Installation</option><option>Other</option></select>
+      <textarea name="Project Details" placeholder="Tell us a little about the project. You can mention fence type, approximate length, damage, gates, etc."></textarea>
+      <div class="uploadbox"><label for="photos"><strong>PHOTOS OF THE FENCE <span>(OPTIONAL)</span></strong><small>Photos help us understand repairs before we come out. Select up to 5 images.</small></label><input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple><div id="photoPreview" class="photo-preview" aria-live="polite"></div></div>
+      <button class="btn primary" type="submit">SEND REQUEST</button>
+    </div>
+    <div id="formStatus" class="form-status" role="status"></div>
+    <div class="form-note">Your project details and optional fence photos are sent securely to Apex Fence for review. We won't ask you to type out what a photo can show.</div>
+  </form>
+</div></section>
 </main>
-
-<footer>
-  <div class="wrap">
-    <span>© 2026 Apex Fence — Quality at Its Peak</span>
-    <span>Residential • Commercial • Repairs • Staining</span>
-  </div>
-</footer>
-
+<footer><div class="wrap"><span>© 2026 Apex Fence — Quality at Its Peak</span><span>Residential • Commercial • Repairs • Staining</span></div></footer>
 <script>
 const p=document.getElementById("photos"),v=document.getElementById("photoPreview"),f=document.getElementById("estimateForm"),s=document.getElementById("formStatus");
 p?.addEventListener("change",()=>{v.innerHTML="";[...p.files].slice(0,5).forEach(x=>{const i=document.createElement("img");i.alt="Selected fence photo";i.src=URL.createObjectURL(x);v.appendChild(i)});if(p.files.length>5){s.textContent="Please choose no more than 5 photos.";s.classList.add("show")}else{s.classList.remove("show")}});
-f?.addEventListener("submit",async e=>{e.preventDefault();if(p.files.length>5){s.textContent="Please choose no more than 5 photos.";s.classList.add("show");return}const total=[...p.files].reduce((n,x)=>n+x.size,0);if([...p.files].some(x=>x.size>8*1024*1024)||total>25*1024*1024){s.textContent="Please keep each photo under 8 MB and all photos together under 25 MB.";s.classList.add("show");return}const btn=f.querySelector('button[type="submit"]');btn.disabled=true;btn.style.opacity=".65";s.textContent="Sending your request and photos…";s.classList.add("show");try{const r=await fetch(f.action,{method:"POST",body:new FormData(f)});const result=await r.json().catch(()=>({}));if(!r.ok||!result.ok)throw new Error(result.error||"Unable to send request.");f.reset();v.innerHTML="";s.textContent="Request received. Apex Fence will review your project and get back to you.";s.classList.add("show")}catch(err){s.textContent=err.message||"Something went wrong. Please call Apex Fence.";s.classList.add("show")}finally{btn.disabled=false;btn.style.opacity=""}});
+f?.addEventListener("submit",async e=>{e.preventDefault();if(p.files.length>5){s.textContent="Please choose no more than 5 photos.";s.classList.add("show");return}const total=[...p.files].reduce((n,x)=>n+x.size,0);if([...p.files].some(x=>x.size>8*1024*1024)||total>25*1024*1024){s.textContent="Please keep each photo under 8 MB and all photos together under 25 MB.";s.classList.add("show");return}const btn=f.querySelector('button[type="submit"]');btn.disabled=true;btn.style.opacity=".65";s.textContent="Sending your request and photos…";s.classList.add("show");try{const r=await fetch(f.action,{method:"POST",body:new FormData(f)});const result=await r.json().catch(()=>({}));if(!r.ok||!result.ok)throw new Error(result.error||"Unable to send request.");f.reset();v.innerHTML="";s.textContent="Request received. Apex Fence will review your project and get back to you.";s.classList.add("show")}catch(err){s.textContent=err.message ||"Something went wrong. Please call Apex Fence.";s.classList.add("show")}finally{btn.disabled=false;btn.style.opacity=""}});
 </script>
 </body>
 </html>
