@@ -20,7 +20,7 @@
 <body>
 <header class="site-header">
   <div class="nav wrap">
-    <a href="#" class="brand"><img src="https://raw.githubusercontent.com/louisdunbanubis-creator/Apex-fence-crm/main/images/apex-logo.png" alt="Apex Fence" class="header-logo" width="200" height="70" onerror="this.style.display='none'"></a>
+    <a href="#" class="brand"><img src="images/image.png" alt="Apex Fence" class="header-logo" width="200" height="70" onerror="this.style.display='none'"></a>
     <nav class="navlinks"><a href="#services">Services</a><a href="#why">Why Apex</a><a href="#estimate">Free Estimate</a><a class="navcta" href="#estimate">GET STARTED</a></nav>
   </div>
 </header>
@@ -42,10 +42,10 @@
 <section class="section" id="services"><div class="wrap">
   <div class="eyebrow">WHAT WE DO</div><h2>One fence company. Every style.</h2><p class="section-intro">From a small repair that bigger companies don't want to touch to a complete new fence, Apex Fence handles the job with a straightforward approach and professional workmanship.</p>
   <div class="services">
-    <article class="service wood" style="--fence-image:url('https://raw.githubusercontent.com/louisdunbanubis-creator/Apex-fence-crm/main/images/wood-fence.jpg')"><div class="service-content"><strong>Wood</strong><p>Shadow box, board-on-board, privacy fences, repairs, posts, gates, staining and restoration.</p><span class="photo-label">WOOD FENCING</span></div></article>
-    <article class="service vinyl" style="--fence-image:url('https://raw.githubusercontent.com/louisdunbanubis-creator/Apex-fence-crm/main/images/vinyl-fence.jpg')"><div class="service-content"><strong>Vinyl</strong><p>Installation and repairs for clean, low-maintenance fencing.</p><span class="photo-label">VINYL FENCING</span></div></article>
-    <article class="service chain" style="--fence-image:url('https://raw.githubusercontent.com/louisdunbanubis-creator/Apex-fence-crm/main/images/chainlink-fence.jpg')"><div class="service-content"><strong>Chain Link</strong><p>Galvanized and black vinyl systems, repairs and installation.</p><span class="photo-label">CHAIN LINK FENCING</span></div></article>
-    <article class="service ornamental" style="--fence-image:url('https://raw.githubusercontent.com/louisdunbanubis-creator/Apex-fence-crm/main/images/ornamental-fence.jpg')"><div class="service-content"><strong>Ornamental</strong><p>Steel and ornamental fence repairs and maintenance.</p><span class="photo-label">ORNAMENTAL / STEEL</span></div></article>
+    <article class="service wood" style="--fence-image:url('images/IMG_0899.webp')"><div class="service-content"><strong>Wood</strong><p>Shadow box, board-on-board, privacy fences, repairs, posts, gates, staining and restoration.</p><span class="photo-label">WOOD FENCING</span></div></article>
+    <article class="service vinyl" style="--fence-image:url('images/IMG_0901.jpeg')"><div class="service-content"><strong>Vinyl</strong><p>Installation and repairs for clean, low-maintenance fencing.</p><span class="photo-label">VINYL FENCING</span></div></article>
+    <article class="service chain" style="--fence-image:url('images/IMG_0900.jpeg')"><div class="service-content"><strong>Chain Link</strong><p>Galvanized and black vinyl systems, repairs and installation.</p><span class="photo-label">CHAIN LINK FENCING</span></div></article>
+    <article class="service ornamental" style="--fence-image:url('image.jpeg')"><div class="service-content"><strong>Ornamental</strong><p>Steel and ornamental fence repairs and maintenance.</p><span class="photo-label">ORNAMENTAL / STEEL</span></div></article>
   </div>
 </div></section>
 <section class="section" id="why"><div class="wrap">
@@ -82,7 +82,7 @@
 <script>
 const p=document.getElementById("photos"),v=document.getElementById("photoPreview"),f=document.getElementById("estimateForm"),s=document.getElementById("formStatus");
 p?.addEventListener("change",()=>{v.innerHTML="";[...p.files].slice(0,5).forEach(x=>{const i=document.createElement("img");i.alt="Selected fence photo";i.src=URL.createObjectURL(x);v.appendChild(i)});if(p.files.length>5){s.textContent="Please choose no more than 5 photos.";s.classList.add("show")}else{s.classList.remove("show")}});
-f?.addEventListener("submit",async e=>{e.preventDefault();if(p.files.length>5){s.textContent="Please choose no more than 5 photos.";s.classList.add("show");return}const total=[...p.files].reduce((n,x)=>n+x.size,0);if([...p.files].some(x=>x.size>8*1024*1024)||total>25*1024*1024){s.textContent="Please keep each photo under 8 MB and all photos together under 25 MB.";s.classList.add("show");return}const btn=f.querySelector('button[type="submit"]');btn.disabled=true;btn.style.opacity=".65";s.textContent="Sending your request and photos…";s.classList.add("show");try{const r=await fetch(f.action,{method:"POST",body:new FormData(f)});const result=await r.json().catch(()=>({}));if(!r.ok||!result.ok)throw new Error(result.error||"Unable to send request.");f.reset();v.innerHTML="";s.textContent="Request received. Apex Fence will review your project and get back to you.";s.classList.add("show")}catch(err){s.textContent=err.message||"Something went wrong. Please call Apex Fence.";s.classList.add("show")}finally{btn.disabled=false;btn.style.opacity=""}});
+f?.addEventListener("submit",async e=>{e.preventDefault();if(p.files.length>5){s.textContent="Please choose no more than 5 photos.";s.classList.add("show");return}const total=[...p.files].reduce((n,x)=>n+x.size,0);if([...p.files].some(x=>x.size>8*1024*1024)||total>25*1024*1024){s.textContent="Please keep each photo under 8 MB and all photos together under 25 MB.";s.classList.add("show");return}const btn=f.querySelector('button[type="submit"]');btn.disabled=true;btn.style.opacity=".65";s.textContent="Sending your request and photos…";s.classList.add("show");try{const r=await fetch(f.action,{method:"POST",body:new FormData(f)});const result=await r.json().catch(()=>({}));if(!r.ok||!result.ok)throw new Error(result.error||"Unable to send request.");f.reset();v.innerHTML="";s.textContent="Request received. Apex Fence will review your project and get back to you.";s.classList.add("show")}catch(err){s.textContent=err.message ||"Something went wrong. Please call Apex Fence.";s.classList.add("show")}finally{btn.disabled=false;btn.style.opacity=""}});
 </script>
 </body>
 </html>
