@@ -1,3 +1,5 @@
+import { notifyNewLead } from "../push.js";
+
 const MAX_PHOTOS = 5;
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 25 * 1024 * 1024;
@@ -51,5 +53,6 @@ export async function onRequestPost({request, env}) {
     await Promise.allSettled(storedKeys.map(key => env.PHOTOS.delete(key)));
     return json({ok:false,error:"We could not save the estimate request. Please call Apex Fence directly."},500);
   }
+  try { await notifyNewLead(env); } catch {}
   return json({ok:true,leadId:id,message:"Thanks! Your estimate request was received."},201);
 }

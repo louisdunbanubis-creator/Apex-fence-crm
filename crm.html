@@ -81,7 +81,7 @@
 <section id="settings" class="view">
   <div class="page-head"><div><span class="eyebrow">APEX FENCE</span><h1>Settings</h1></div></div>
   <div class="card">
-    <h2>Business information</h2><div class="grid2"><label>Business name<input id="businessName" value="Apex Fence"></label><label>Business email<input id="businessEmail" type="email" value="Apexinstallsne@gmail.com"></label><label>Business phone<input id="businessPhone" type="tel" placeholder="Add your dedicated Apex number later"></label></div></div><div class="card"><h2>Your pricing defaults</h2>
+    <h2>Business information</h2><div class="grid2"><label>Business name<input id="businessName" value="Apex Fence"></label><label>Business email<input id="businessEmail" type="email" value="Apexinstallsne@gmail.com"></label><label>Business phone<input id="businessPhone" type="tel" value="531-427-8293"></label></div></div><div class="card"><h2>Your pricing defaults</h2>
     <div class="grid2">
       <label>Default labor rate $/hr<input id="defaultLaborRate" type="number" value="45"></label>
       <label>Minimum service charge $<input id="defaultServiceCharge" type="number" value="175"></label>
@@ -94,7 +94,7 @@
     </div>
     <button class="primary" id="saveSettings">Save Settings</button>
   </div>
-  <div class="card"><h2>Online estimates & customer photos</h2><p class="muted">Cloudflare stores website leads in D1 and customer fence photos in private R2 storage. Paste the secret token you created in Cloudflare, then sync.</p><label>Cloudflare CRM token<input id="crmToken" type="password" autocomplete="off" placeholder="Paste APEX_CRM_TOKEN"></label><div class="row gap form-actions"><button class="primary" id="syncOnlineLeads">Sync Online Leads</button><div id="onlineSyncStatus" class="form-status" role="status"></div></div></div><div class="card danger-zone"><h2>Data</h2><p class="muted">V1 is local-first. Export a backup before changing devices.</p><div class="row gap"><button class="secondary" id="exportData">Export Backup</button><label class="file-btn">Import Backup<input id="importData" type="file" accept=".json" hidden></label><button class="danger" id="resetData">Reset CRM</button></div></div>
+  <div class="card"><h2>Online estimates & customer photos</h2><p class="muted">Cloudflare stores website leads in D1 and customer fence photos in private R2 storage. Paste the secret token you created in Cloudflare, then sync.</p><label>Cloudflare CRM token<input id="crmToken" type="password" autocomplete="off" placeholder="Paste APEX_CRM_TOKEN"></label><div class="row gap form-actions"><button class="primary" id="syncOnlineLeads">Sync Online Leads</button><button class="secondary" id="enableLeadAlerts" type="button">Turn on lead alerts</button><div id="onlineSyncStatus" class="form-status" role="status"></div></div></div><div class="card danger-zone"><h2>Data</h2><p class="muted">V1 is local-first. Export a backup before changing devices.</p><div class="row gap"><button class="secondary" id="exportData">Export Backup</button><label class="file-btn">Import Backup<input id="importData" type="file" accept=".json" hidden></label><button class="danger" id="resetData">Reset CRM</button></div></div>
 </section>
 </main>
 

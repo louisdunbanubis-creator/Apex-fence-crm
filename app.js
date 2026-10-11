@@ -1,4 +1,4 @@
-const KEY='apexFenceCRM.v1';const defaultData={leads:[],jobs:[],estimates:[],settings:{laborRate:45,serviceCharge:175,materialMarkup:25,homeDepotMarkup:50,woodPost14:125,woodPost5:100,woodPicketHD:4.28,woodRailHD:28.51,woodPostHD:12.98,woodNailsHD:21,quikrete:6.47, bagsPerPost:1,woodRepairLF:25,reinstallLF:10,businessName:'Apex Fence',businessEmail:'Apexinstallsne@gmail.com',businessPhone:'',crmToken:''}};let data=load();let deferredInstall=null;
+const KEY='apexFenceCRM.v1';const defaultData={leads:[],jobs:[],estimates:[],settings:{laborRate:45,serviceCharge:175,materialMarkup:25,homeDepotMarkup:50,woodPost14:125,woodPost5:100,woodPicketHD:4.28,woodRailHD:28.51,woodPostHD:12.98,woodNailsHD:21,quikrete:6.47, bagsPerPost:1,woodRepairLF:25,reinstallLF:10,businessName:'Apex Fence',businessEmail:'Apexinstallsne@gmail.com',businessPhone:'531-427-8293',crmToken:''}};let data=load();let deferredInstall=null;
 function load(){try{return {...defaultData,...JSON.parse(localStorage.getItem(KEY)||'{}'),settings:{...defaultData.settings,...(JSON.parse(localStorage.getItem(KEY)||'{}').settings||{})}}}catch{return structuredClone(defaultData)}}function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}function money(n){return '$'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
 function $(id){return document.getElementById(id)}function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function showView(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));window.scrollTo(0,0)}
@@ -134,7 +134,7 @@ $('saveAndQuote').onclick=()=>{saveCurrentEstimate();renderCustomerQuote();showV
 $('leadSearch').oninput=renderLeads;$('leadFilter').onchange=renderLeads;
 $('saveSettings').onclick=()=>{data.settings={...data.settings,businessName:$('businessName').value.trim(),businessEmail:$('businessEmail').value.trim(),businessPhone:$('businessPhone').value.trim(),crmToken:$('crmToken')?.value.trim()||data.settings.crmToken||'',laborRate:+$('defaultLaborRate').value,serviceCharge:+$('defaultServiceCharge').value,materialMarkup:+$('materialMarkup').value,homeDepotMarkup:+$('homeDepotMarkup').value,woodPost14:+$('woodPost14').value,woodPost5:+$('woodPost5').value,quikrete:+$('quikrete').value,bagsPerPost:+$('bagsPerPost').value,woodRepairLF:+$('woodRepairLF').value,reinstallLF:+$('reinstallLF').value,woodPicketHD:+$('woodPicketHD').value,woodRailHD:+$('woodRailHD').value,woodPostHD:+$('woodPostHD').value,woodNailsHD:+$('woodNailsHD').value};save();alert('Pricing settings saved.')};
 function renderJobs(){$('jobList').innerHTML=data.jobs.length?data.jobs.sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(jobHTML).join(''):'<div class="card"><p class="muted">No jobs scheduled.</p></div>'}
-function renderSettings(){const s=data.settings;if($('businessName'))$('businessName').value=s.businessName||'Apex Fence';if($('businessEmail'))$('businessEmail').value=s.businessEmail||'Apexinstallsne@gmail.com';if($('businessPhone'))$('businessPhone').value=s.businessPhone||'';if($('crmToken'))$('crmToken').value=s.crmToken||'';if($('woodHeight'))$('woodHeight').value=s.woodHeight??6;[['defaultLaborRate',s.laborRate],['defaultServiceCharge',s.serviceCharge],['materialMarkup',s.materialMarkup??25],['homeDepotMarkup',s.homeDepotMarkup??50],['woodPost14',s.woodPost14],['woodPost5',s.woodPost5],['woodPicketHD',s.woodPicketHD??4.28],['woodRailHD',s.woodRailHD??28.51],['woodPostHD',s.woodPostHD??12.98],['woodNailsHD',s.woodNailsHD??21],['quikrete',s.quikrete??6.47],['bagsPerPost',s.bagsPerPost],['woodRepairLF',s.woodRepairLF],['reinstallLF',s.reinstallLF]].forEach(([id,v])=>$(id).value=v)}
+function renderSettings(){const s=data.settings;if($('businessName'))$('businessName').value=s.businessName||'Apex Fence';if($('businessEmail'))$('businessEmail').value=s.businessEmail||'Apexinstallsne@gmail.com';if($('businessPhone'))$('businessPhone').value=s.businessPhone||'531-427-8293';if($('crmToken'))$('crmToken').value=s.crmToken||'';if($('woodHeight'))$('woodHeight').value=s.woodHeight??6;[['defaultLaborRate',s.laborRate],['defaultServiceCharge',s.serviceCharge],['materialMarkup',s.materialMarkup??25],['homeDepotMarkup',s.homeDepotMarkup??50],['woodPost14',s.woodPost14],['woodPost5',s.woodPost5],['woodPicketHD',s.woodPicketHD??4.28],['woodRailHD',s.woodRailHD??28.51],['woodPostHD',s.woodPostHD??12.98],['woodNailsHD',s.woodNailsHD??21],['quikrete',s.quikrete??6.47],['bagsPerPost',s.bagsPerPost],['woodRepairLF',s.woodRepairLF],['reinstallLF',s.reinstallLF]].forEach(([id,v])=>$(id).value=v)}
 function renderAll(){renderDashboard();renderLeads();renderJobs();renderSettings();if($('estimateLead'))renderEstimateLeadOptions();calcEstimate()}$('closeModal').onclick=closeModal;$('modal').onclick=e=>{if(e.target.id==='modal')closeModal()};
 $('exportData').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='apex-fence-crm-backup.json';a.click();URL.revokeObjectURL(a.href)};
 $('importData').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);save();alert('Backup imported.')}catch{alert('Invalid backup file.')}};r.readAsText(f)};
@@ -181,6 +181,27 @@ async function viewLeadPhotos(id){
   }catch(e){gallery.innerHTML='<p class="muted">Unable to load customer photos.</p>'}
 }
 
+function pushKeyBytes(value){const padded=value.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((value.length+3)%4);const raw=atob(padded);return Uint8Array.from(raw,c=>c.charCodeAt(0))}
+$('enableLeadAlerts')?.addEventListener('click',async()=>{
+  const status=$('onlineSyncStatus');
+  const token=data.settings.crmToken||'';
+  const say=message=>{if(status){status.textContent=message;status.classList.add('show')}};
+  if(!token){say('Add the Cloudflare CRM token, save settings, then turn on alerts.');return}
+  if(!('Notification' in window)||!('serviceWorker' in navigator)||!('PushManager' in window)){say('Open Apex Hub in Safari to turn on lead alerts.');return}
+  const permission=await Notification.requestPermission();
+  if(permission!=='granted'){say('Lead alerts stay off until notifications are allowed.');return}
+  try{
+    const registration=await navigator.serviceWorker.ready;
+    const keyResponse=await fetch('/api/push-key');
+    const keyBody=await keyResponse.json().catch(()=>({}));
+    if(!keyResponse.ok||!keyBody.publicKey)throw new Error(keyBody.error||'Lead alerts are not ready on Cloudflare yet.');
+    const subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:pushKeyBytes(keyBody.publicKey)});
+    const saveResponse=await fetch('/api/push-subscribe',{method:'POST',headers:{Authorization:'Bearer '+token,'content-type':'application/json'},body:JSON.stringify(subscription)});
+    const saveBody=await saveResponse.json().catch(()=>({}));
+    if(!saveResponse.ok||!saveBody.ok)throw new Error(saveBody.error||'Could not save this Mac for lead alerts.');
+    say('Lead alerts are on. New estimate requests will notify this Mac.');
+  }catch(e){say(e.message||'Could not turn on lead alerts.')}
+});
 $('syncOnlineLeads')?.addEventListener('click',syncOnlineLeads);
 renderAll();if($('activeEstimateNumber'))$('activeEstimateNumber').value=nextEstimateNumber();renderEstimatorFields();if(data.settings.crmToken) syncOnlineLeads();
 $('jobType').addEventListener('change',()=>{const cl=$('jobType').value==='Chain Link Install';document.querySelectorAll('#clHeight,#clFinish,#terminalPosts,#singleGates,#singleGateWidth,#doubleGates,#doubleGateWidth').forEach(x=>x.disabled=!cl);renderEstimatorFields();calcEstimate()});
