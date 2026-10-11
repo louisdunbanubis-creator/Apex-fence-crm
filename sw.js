@@ -1,4 +1,4 @@
-const CACHE_NAME = "apex-fence-v2";
+const CACHE_NAME = "apex-fence-v3";
 const APP_SHELL = ["/","/crm.html","/app.js","/styles.css","/manifest.json","/icon.svg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(APP_SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))); self.clients.claim(); });

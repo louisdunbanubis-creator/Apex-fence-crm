@@ -8,6 +8,21 @@ function authorized(request, env) {
 function json(data, status=200) {
   return new Response(JSON.stringify(data), {status, headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store"}});
 }
+export async function onRequestDelete({request,env}) {
+  if (!authorized(request,env)) return unauthorized();
+  if (!env.DB) return json({ok:false,error:"D1 is not connected."},503);
+  const id = new URL(request.url).searchParams.get("id") || "";
+  if (!id) return json({ok:false,error:"Missing lead."},400);
+  try {
+    const photos = await env.DB.prepare("SELECT object_key FROM lead_photos WHERE lead_id = ?").bind(id).all();
+    if (env.PHOTOS) await Promise.allSettled((photos.results || []).map(photo => env.PHOTOS.delete(photo.object_key)));
+    await env.DB.prepare("DELETE FROM lead_photos WHERE lead_id = ?").bind(id).run();
+    await env.DB.prepare("DELETE FROM online_leads WHERE id = ?").bind(id).run();
+    return json({ok:true});
+  } catch {
+    return json({ok:false,error:"Unable to delete that lead."},500);
+  }
+}
 export async function onRequestGet({request,env}) {
   if (!authorized(request,env)) return unauthorized();
   if (!env.DB) return json({ok:false,error:"D1 is not connected."},503);
