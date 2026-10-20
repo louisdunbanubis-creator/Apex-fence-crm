@@ -201,25 +201,47 @@ async function viewLeadPhotos(id){
 }
 
 function pushKeyBytes(value){const padded=value.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((value.length+3)%4);const raw=atob(padded);return Uint8Array.from(raw,c=>c.charCodeAt(0))}
+function phoneAlertHelp(){
+  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  if(ios&&!standalone)return 'On iPhone, open Apex Hub in Safari, tap Share, then Add to Home Screen. Open the Apex Hub icon, then turn on phone alerts.';
+  if(ios||/Android/i.test(navigator.userAgent))return 'Tap Turn on phone alerts and allow notifications. New website estimates will show on this phone.';
+  return 'Open Apex Hub on your phone, tap Turn on phone alerts, and allow notifications. New website estimates will show on that phone.';
+}
+function alertStatus(){const status=$('onlineSyncStatus');return message=>{if(status){status.textContent=message;status.classList.add('show')}}}
+const alertHelp=$('alertHelp');if(alertHelp)alertHelp.textContent=phoneAlertHelp();
 $('enableLeadAlerts')?.addEventListener('click',async()=>{
-  const status=$('onlineSyncStatus');
+  const say=alertStatus();
   const token=data.settings.crmToken||'';
-  const say=message=>{if(status){status.textContent=message;status.classList.add('show')}};
-  if(!token){say('Add the Cloudflare CRM token, save settings, then turn on alerts.');return}
-  if(!('Notification' in window)||!('serviceWorker' in navigator)||!('PushManager' in window)){say('Open Apex Hub in Safari to turn on lead alerts.');return}
+  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  if(!token){say('Add the Cloudflare CRM token, save settings, then turn on phone alerts.');return}
+  if(ios&&!standalone){say(phoneAlertHelp());return}
+  if(!('Notification' in window)||!('serviceWorker' in navigator)||!('PushManager' in window)){say(phoneAlertHelp());return}
   const permission=await Notification.requestPermission();
-  if(permission!=='granted'){say('Lead alerts stay off until notifications are allowed.');return}
+  if(permission!=='granted'){say('Phone alerts stay off until notifications are allowed. On iPhone, check Settings, then Notifications, then Apex Hub.');return}
   try{
     const registration=await navigator.serviceWorker.ready;
     const keyResponse=await fetch('/api/push-key');
     const keyBody=await keyResponse.json().catch(()=>({}));
-    if(!keyResponse.ok||!keyBody.publicKey)throw new Error(keyBody.error||'Lead alerts are not ready on Cloudflare yet.');
+    if(!keyResponse.ok||!keyBody.publicKey)throw new Error(keyBody.error||'Phone alerts are not ready on Cloudflare yet.');
     const subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:pushKeyBytes(keyBody.publicKey)});
     const saveResponse=await fetch('/api/push-subscribe',{method:'POST',headers:{Authorization:'Bearer '+token,'content-type':'application/json'},body:JSON.stringify(subscription)});
     const saveBody=await saveResponse.json().catch(()=>({}));
-    if(!saveResponse.ok||!saveBody.ok)throw new Error(saveBody.error||'Could not save this Mac for lead alerts.');
-    say('Lead alerts are on. New estimate requests will notify this Mac.');
-  }catch(e){say(e.message||'Could not turn on lead alerts.')}
+    if(!saveResponse.ok||!saveBody.ok)throw new Error(saveBody.error||'Could not save this phone for alerts.');
+    say('Phone alerts are on. New website estimates will notify this phone.');
+  }catch(e){say(e.message||'Could not turn on phone alerts.')}
+});
+$('testLeadAlerts')?.addEventListener('click',async()=>{
+  const say=alertStatus();
+  const token=data.settings.crmToken||'';
+  if(!token){say('Add the Cloudflare CRM token, save settings, then send a test alert.');return}
+  try{
+    const response=await fetch('/api/push-test',{method:'POST',headers:{Authorization:'Bearer '+token}});
+    const body=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(body.error||body.message||'Could not send a test alert.');
+    say(body.message||'Test alert sent.');
+  }catch(e){say(e.message||'Could not send a test alert.')}
 });
 $('syncOnlineLeads')?.addEventListener('click',syncOnlineLeads);
 renderAll();if($('activeEstimateNumber'))$('activeEstimateNumber').value=nextEstimateNumber();renderEstimatorFields();if(data.settings.crmToken) syncOnlineLeads();

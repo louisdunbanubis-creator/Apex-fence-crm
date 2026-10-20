@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
 <meta name="description" content="Apex Fence CRM — Quality at its Peak"><meta name="robots" content="noindex,nofollow">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Apex Hub">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
 <title>Apex Fence CRM</title>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -94,7 +99,7 @@
     </div>
     <button class="primary" id="saveSettings">Save Settings</button>
   </div>
-  <div class="card"><h2>Online estimates & customer photos</h2><p class="muted">Cloudflare stores website leads in D1 and customer fence photos in private R2 storage. Paste the secret token you created in Cloudflare, then sync.</p><label>Cloudflare CRM token<input id="crmToken" type="password" autocomplete="off" placeholder="Paste APEX_CRM_TOKEN"></label><div class="row gap form-actions"><button class="primary" id="syncOnlineLeads">Sync Online Leads</button><button class="secondary" id="enableLeadAlerts" type="button">Turn on lead alerts</button><div id="onlineSyncStatus" class="form-status" role="status"></div></div></div><div class="card danger-zone"><h2>Data</h2><p class="muted">V1 is local-first. Export a backup before changing devices.</p><div class="row gap"><button class="secondary" id="exportData">Export Backup</button><label class="file-btn">Import Backup<input id="importData" type="file" accept=".json" hidden></label><button class="danger" id="resetData">Reset CRM</button></div></div>
+  <div class="card"><h2>Online estimates & customer photos</h2><p class="muted">Cloudflare stores website leads in D1 and customer fence photos in private R2 storage. Paste the secret token you created in Cloudflare, then sync.</p><label>Cloudflare CRM token<input id="crmToken" type="password" autocomplete="off" placeholder="Paste APEX_CRM_TOKEN"></label><div class="row gap form-actions"><button class="primary" id="syncOnlineLeads">Sync Online Leads</button></div><h2>Phone alerts</h2><p class="muted" id="alertHelp">Open Apex Hub on your phone and turn on alerts. New website estimates will notify that phone.</p><div class="row gap form-actions"><button class="primary" id="enableLeadAlerts" type="button">Turn on phone alerts</button><button class="secondary" id="testLeadAlerts" type="button">Send test alert</button><div id="onlineSyncStatus" class="form-status" role="status"></div></div></div><div class="card danger-zone"><h2>Data</h2><p class="muted">V1 is local-first. Export a backup before changing devices.</p><div class="row gap"><button class="secondary" id="exportData">Export Backup</button><label class="file-btn">Import Backup<input id="importData" type="file" accept=".json" hidden></label><button class="danger" id="resetData">Reset CRM</button></div></div>
 </section>
 </main>
 
@@ -107,7 +112,7 @@
 </nav>
 
 <div id="modal" class="modal hidden"><div class="modal-box"><button class="close" id="closeModal">×</button><div id="modalContent"></div></div></div>
-<script src="app.js?v=4"></script>
-<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4');</script>
+<script src="app.js?v=5"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5');</script>
 </body>
 </html>

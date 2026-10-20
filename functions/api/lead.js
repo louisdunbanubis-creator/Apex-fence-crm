@@ -53,6 +53,8 @@ export async function onRequestPost({request, env}) {
     await Promise.allSettled(storedKeys.map(key => env.PHOTOS.delete(key)));
     return json({ok:false,error:"We could not save the estimate request. Please call Apex Fence directly."},500);
   }
-  try { await notifyNewLead(env); } catch {}
+  try { await notifyNewLead(env, { name, phone, address, projectType, tag: id }); } catch (error) {
+    console.error("lead alert failed", error?.message || error);
+  }
   return json({ok:true,leadId:id,message:"Thanks! Your estimate request was received."},201);
 }

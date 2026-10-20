@@ -29,7 +29,11 @@ Create an encrypted Production secret:
 - Name: `APEX_CRM_TOKEN`
 - Value: a long random secret that you control.
 
-Do not put the value in GitHub. If Preview deployments are enabled, configure the Preview secret separately.
+Phone alerts also need a VAPID key pair, stored as Production secrets:
+- `VAPID_PUBLIC_KEY` — URL-safe base64 public key
+- `VAPID_PRIVATE_JWK` — private key as one-line JSON
+
+Do not put the values in GitHub. If Preview deployments are enabled, configure the Preview secrets separately.
 
 ## 4. Initialize D1
 

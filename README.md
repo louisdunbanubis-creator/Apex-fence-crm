@@ -27,6 +27,7 @@ Required production resources:
 - D1 binding: `DB`
 - R2 binding: `PHOTOS`
 - Encrypted secret: `APEX_CRM_TOKEN`
+- Phone-alert secrets: `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_JWK`
 
 ## Deployment
 
