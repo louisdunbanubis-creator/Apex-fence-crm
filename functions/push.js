@@ -97,7 +97,7 @@ export async function notifyNewLead(env, lead = {}) {
   }
   await ensurePushSchema(env);
   const rows = await env.DB.prepare("SELECT id, endpoint, p256dh, auth FROM push_subscriptions").all();
-  const message = JSON.stringify({ ...alertText(lead), url: "/crm.html" });
+  const message = JSON.stringify({ ...alertText(lead), url: "/crm" });
   let sent = 0;
   let failed = 0;
   await Promise.allSettled((rows.results || []).map(async (row) => {
